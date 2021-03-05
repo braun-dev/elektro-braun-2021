@@ -1,0 +1,150 @@
+{
+  "version": 1,
+  "cli": {
+    "defaultCollection": "@nrwl/angular"
+  },
+  "defaultProject": "time-tracking",
+  "schematics": {
+    "@nrwl/angular": {
+      "application": {
+        "linter": "eslint"
+      },
+      "library": {
+        "linter": "eslint"
+      },
+      "storybook-configuration": {
+        "linter": "eslint"
+      }
+    },
+    "@nrwl/angular:application": {
+      "style": "css",
+      "linter": "eslint",
+      "unitTestRunner": "jest",
+      "e2eTestRunner": "cypress"
+    },
+    "@nrwl/angular:library": {
+      "style": "css",
+      "linter": "eslint",
+      "unitTestRunner": "jest"
+    },
+    "@nrwl/angular:component": {
+      "style": "css"
+    }
+  },
+  "projects": {
+    "time-tracking": {
+      "projectType": "application",
+      "root": "apps/time-tracking",
+      "sourceRoot": "apps/time-tracking/src",
+      "prefix": "elektro-braun",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/apps/time-tracking",
+            "index": "apps/time-tracking/src/index.html",
+            "main": "apps/time-tracking/src/main.ts",
+            "polyfills": "apps/time-tracking/src/polyfills.ts",
+            "tsConfig": "apps/time-tracking/tsconfig.app.json",
+            "aot": true,
+            "assets": [
+              "apps/time-tracking/src/favicon.ico",
+              "apps/time-tracking/src/assets"
+            ],
+            "styles": ["apps/time-tracking/src/styles.css"],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "apps/time-tracking/src/environments/environment.ts",
+                  "with": "apps/time-tracking/src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb",
+                  "maximumError": "10kb"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "time-tracking:build"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "time-tracking:build:production"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "time-tracking:build"
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "apps/time-tracking/src/**/*.ts",
+              "apps/time-tracking/src/**/*.html"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/apps/time-tracking"],
+          "options": {
+            "jestConfig": "apps/time-tracking/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "time-tracking-e2e": {
+      "root": "apps/time-tracking-e2e",
+      "sourceRoot": "apps/time-tracking-e2e/src",
+      "projectType": "application",
+      "architect": {
+        "e2e": {
+          "builder": "@nrwl/cypress:cypress",
+          "options": {
+            "cypressConfig": "apps/time-tracking-e2e/cypress.json",
+            "tsConfig": "apps/time-tracking-e2e/tsconfig.e2e.json",
+            "devServerTarget": "time-tracking:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "time-tracking:serve:production"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["apps/time-tracking-e2e/**/*.{js,ts}"]
+          }
+        }
+      }
+    }
+  }
+}
