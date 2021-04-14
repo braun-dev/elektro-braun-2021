@@ -3,7 +3,7 @@
   "cli": {
     "defaultCollection": "@nrwl/angular"
   },
-  "defaultProject": "time-tracking",
+  "defaultProject": "frontend-time-tracking",
   "schematics": {
     "@nrwl/angular": {
       "application": {
@@ -32,34 +32,85 @@
     }
   },
   "projects": {
-    "time-tracking": {
+    "api-time-tracking": {
+      "root": "apps/api/time-tracking",
+      "sourceRoot": "apps/api/time-tracking/src",
       "projectType": "application",
-      "root": "apps/time-tracking",
-      "sourceRoot": "apps/time-tracking/src",
+      "prefix": "api-time-tracking",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/node:build",
+          "outputs": ["{options.outputPath}"],
+          "options": {
+            "outputPath": "dist/apps/api/time-tracking",
+            "main": "apps/api/time-tracking/src/main.ts",
+            "tsConfig": "apps/api/time-tracking/tsconfig.app.json",
+            "assets": ["apps/api/time-tracking/src/assets"]
+          },
+          "configurations": {
+            "production": {
+              "optimization": true,
+              "extractLicenses": true,
+              "inspect": false,
+              "fileReplacements": [
+                {
+                  "replace": "apps/api/time-tracking/src/environments/environment.ts",
+                  "with": "apps/api/time-tracking/src/environments/environment.prod.ts"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@nrwl/node:execute",
+          "options": {
+            "buildTarget": "api-time-tracking:build"
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["apps/api/time-tracking/**/*.ts"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/apps/api/time-tracking"],
+          "options": {
+            "jestConfig": "apps/api/time-tracking/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "frontend-time-tracking": {
+      "projectType": "application",
+      "root": "apps/frontend/time-tracking",
+      "sourceRoot": "apps/frontend/time-tracking/src",
       "prefix": "elektro-braun",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/apps/time-tracking",
-            "index": "apps/time-tracking/src/index.html",
-            "main": "apps/time-tracking/src/main.ts",
-            "polyfills": "apps/time-tracking/src/polyfills.ts",
-            "tsConfig": "apps/time-tracking/tsconfig.app.json",
+            "outputPath": "dist/apps/frontend/time-tracking",
+            "index": "apps/frontend/time-tracking/src/index.html",
+            "main": "apps/frontend/time-tracking/src/main.ts",
+            "polyfills": "apps/frontend/time-tracking/src/polyfills.ts",
+            "tsConfig": "apps/frontend/time-tracking/tsconfig.app.json",
             "aot": true,
             "assets": [
-              "apps/time-tracking/src/favicon.ico",
-              "apps/time-tracking/src/assets"
+              "apps/frontend/time-tracking/src/favicon.ico",
+              "apps/frontend/time-tracking/src/assets"
             ],
-            "styles": ["apps/time-tracking/src/styles.css"],
+            "styles": ["apps/frontend/time-tracking/src/styles.css"],
             "scripts": []
           },
           "configurations": {
             "production": {
               "fileReplacements": [
                 {
-                  "replace": "apps/time-tracking/src/environments/environment.ts",
-                  "with": "apps/time-tracking/src/environments/environment.prod.ts"
+                  "replace": "apps/frontend/time-tracking/src/environments/environment.ts",
+                  "with": "apps/frontend/time-tracking/src/environments/environment.prod.ts"
                 }
               ],
               "optimization": true,
@@ -87,61 +138,272 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "time-tracking:build"
+            "browserTarget": "frontend-time-tracking:build",
+            "proxyConfig": "apps/frontend/time-tracking/proxy.conf.json"
           },
           "configurations": {
             "production": {
-              "browserTarget": "time-tracking:build:production"
+              "browserTarget": "frontend-time-tracking:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "time-tracking:build"
+            "browserTarget": "frontend-time-tracking:build"
           }
         },
         "lint": {
           "builder": "@nrwl/linter:eslint",
           "options": {
             "lintFilePatterns": [
-              "apps/time-tracking/src/**/*.ts",
-              "apps/time-tracking/src/**/*.html"
+              "apps/frontend/time-tracking/src/**/*.ts",
+              "apps/frontend/time-tracking/src/**/*.html"
             ]
           }
         },
         "test": {
           "builder": "@nrwl/jest:jest",
-          "outputs": ["coverage/apps/time-tracking"],
+          "outputs": ["coverage/apps/frontend/time-tracking"],
           "options": {
-            "jestConfig": "apps/time-tracking/jest.config.js",
+            "jestConfig": "apps/frontend/time-tracking/jest.config.js",
             "passWithNoTests": true
           }
         }
       }
     },
-    "time-tracking-e2e": {
-      "root": "apps/time-tracking-e2e",
-      "sourceRoot": "apps/time-tracking-e2e/src",
+    "frontend-time-tracking-e2e": {
+      "root": "apps/frontend/time-tracking-e2e",
+      "sourceRoot": "apps/frontend/time-tracking-e2e/src",
       "projectType": "application",
       "architect": {
         "e2e": {
           "builder": "@nrwl/cypress:cypress",
           "options": {
-            "cypressConfig": "apps/time-tracking-e2e/cypress.json",
-            "tsConfig": "apps/time-tracking-e2e/tsconfig.e2e.json",
-            "devServerTarget": "time-tracking:serve"
+            "cypressConfig": "apps/frontend/time-tracking-e2e/cypress.json",
+            "tsConfig": "apps/frontend/time-tracking-e2e/tsconfig.e2e.json",
+            "devServerTarget": "frontend-time-tracking:serve"
           },
           "configurations": {
             "production": {
-              "devServerTarget": "time-tracking:serve:production"
+              "devServerTarget": "frontend-time-tracking:serve:production"
             }
           }
         },
         "lint": {
           "builder": "@nrwl/linter:eslint",
           "options": {
-            "lintFilePatterns": ["apps/time-tracking-e2e/**/*.{js,ts}"]
+            "lintFilePatterns": ["apps/frontend/time-tracking-e2e/**/*.{js,ts}"]
+          }
+        }
+      }
+    },
+    "auth-domain": {
+      "projectType": "library",
+      "root": "libs/auth/domain",
+      "sourceRoot": "libs/auth/domain/src",
+      "prefix": "auth",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/angular:ng-packagr-lite",
+          "options": {
+            "tsConfig": "libs/auth/domain/tsconfig.lib.json",
+            "project": "libs/auth/domain/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "libs/auth/domain/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/auth/domain/src/**/*.ts",
+              "libs/auth/domain/src/**/*.html"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/auth/domain"],
+          "options": {
+            "jestConfig": "libs/auth/domain/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "auth-feature-login": {
+      "projectType": "library",
+      "root": "libs/auth/feature-login",
+      "sourceRoot": "libs/auth/feature-login/src",
+      "prefix": "auth",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/angular:ng-packagr-lite",
+          "options": {
+            "tsConfig": "libs/auth/feature-login/tsconfig.lib.json",
+            "project": "libs/auth/feature-login/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "libs/auth/feature-login/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/auth/feature-login/src/**/*.ts",
+              "libs/auth/feature-login/src/**/*.html"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/auth/feature-login"],
+          "options": {
+            "jestConfig": "libs/auth/feature-login/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "auth-feature-register": {
+      "projectType": "library",
+      "root": "libs/auth/feature-register",
+      "sourceRoot": "libs/auth/feature-register/src",
+      "prefix": "auth",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/angular:ng-packagr-lite",
+          "options": {
+            "tsConfig": "libs/auth/feature-register/tsconfig.lib.json",
+            "project": "libs/auth/feature-register/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "libs/auth/feature-register/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/auth/feature-register/src/**/*.ts",
+              "libs/auth/feature-register/src/**/*.html"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/auth/feature-register"],
+          "options": {
+            "jestConfig": "libs/auth/feature-register/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "shared-util-data": {
+      "projectType": "library",
+      "root": "libs/shared/util-data",
+      "sourceRoot": "libs/shared/util-data/src",
+      "prefix": "data",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/angular:ng-packagr-lite",
+          "options": {
+            "tsConfig": "libs/shared/util-data/tsconfig.lib.json",
+            "project": "libs/shared/util-data/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "libs/shared/util-data/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/shared/util-data/src/**/*.ts",
+              "libs/shared/util-data/src/**/*.html"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/shared/util-data"],
+          "options": {
+            "jestConfig": "libs/shared/util-data/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "time-tracking-domain": {
+      "projectType": "library",
+      "root": "libs/time-tracking/domain",
+      "sourceRoot": "libs/time-tracking/domain/src",
+      "prefix": "time-tracking",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/angular:ng-packagr-lite",
+          "options": {
+            "tsConfig": "libs/time-tracking/domain/tsconfig.lib.json",
+            "project": "libs/time-tracking/domain/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "libs/time-tracking/domain/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/time-tracking/domain/src/**/*.ts",
+              "libs/time-tracking/domain/src/**/*.html"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/time-tracking/domain"],
+          "options": {
+            "jestConfig": "libs/time-tracking/domain/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "time-tracking-feature": {
+      "projectType": "library",
+      "root": "libs/time-tracking/feature",
+      "sourceRoot": "libs/time-tracking/feature/src",
+      "prefix": "elektro-braun",
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/time-tracking/feature/src/**/*.ts",
+              "libs/time-tracking/feature/src/**/*.html"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/time-tracking/feature"],
+          "options": {
+            "jestConfig": "libs/time-tracking/feature/jest.config.js",
+            "passWithNoTests": true
           }
         }
       }

@@ -1,34 +1,34 @@
 {
   "implicitDependencies": {
     "angular.json": "*",
-    "package.json": {
-      "dependencies": "*",
-      "devDependencies": "*"
-    },
+    "package.json": { "dependencies": "*", "devDependencies": "*" },
     "tsconfig.base.json": "*",
     "tslint.json": "*",
     ".eslintrc.json": "*",
     "nx.json": "*"
   },
-  "affected": {
-    "defaultBase": "master"
-  },
+  "affected": { "defaultBase": "master" },
   "npmScope": "elektro-braun",
   "tasksRunnerOptions": {
     "default": {
       "runner": "@nrwl/workspace/tasks-runners/default",
-      "options": {
-        "cacheableOperations": ["build", "lint", "test", "e2e"]
-      }
+      "options": { "cacheableOperations": ["build", "lint", "test", "e2e"] }
     }
   },
   "projects": {
-    "time-tracking": {
-      "tags": []
-    },
-    "time-tracking-e2e": {
+    "api-time-tracking": { "tags": [] },
+    "frontend-time-tracking": { "tags": [] },
+    "frontend-time-tracking-e2e": {
       "tags": [],
-      "implicitDependencies": ["time-tracking"]
-    }
+      "implicitDependencies": ["frontend-time-tracking"]
+    },
+    "auth-domain": { "tags": ["domain:auth", "type:domain-logic"] },
+    "auth-feature-login": { "tags": ["domain:auth", "type:feature"] },
+    "auth-feature-register": { "tags": ["domain:auth", "type:feature"] },
+    "shared-util-data": { "tags": ["domain:shared", "type:util"] },
+    "time-tracking-domain": {
+      "tags": ["domain:time-tracking", "type:domain-logic"]
+    },
+    "time-tracking-feature": { "tags": ["domain:time-tracking", "type:feature"] }
   }
 }

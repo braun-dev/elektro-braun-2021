@@ -1,10 +1,8 @@
-import { environment } from './apps/time-tracking/src/environments/environment';
-
 module.exports = {
   purge: {
-    enabled: environment.production,
+    enabled: false,
     content: [
-      "./src/**/*.{html,ts}",
+      "./apps/**/*.{html,ts}",
       "./libs/**/*{html,ts}"
     ]
   },

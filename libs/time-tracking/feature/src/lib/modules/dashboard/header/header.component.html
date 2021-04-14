@@ -1,0 +1,48 @@
+<div class='flex flex-col px-8 overflow-y-visible sticky top-0 pb-8 pt-10 top-0 bg-gray-100 border-b border-gray-200'>
+  <div class='flex items-center justify-between'>
+    <h1 class='text-2xl text-gray-900'>Erfasste Arbeitszeiten</h1>
+    <div>
+      <div class='flex flex-row items-center justify-end overflow-y-visible' *ngIf='vm?.employees'>
+        <input
+          placeholder='Filter (Ab Datum)'
+          type='text'
+          #fromDate
+          [value]='filter?.from | date:"dd.MM.yyyy"'
+          (keydown.enter)='updateFromDate(fromDate?.value)'
+          (blur)='updateFromDate(fromDate?.value)'
+          class='mr-3 appearance-none flex flex-shrink-0 flex-grow-0 w-64 bg-white border border-gray-300 rounded-md shadow-sm pl-3 pr-10 py-2 text-left cursor-default focus:outline-none focus:ring-1 focus:ring-blue-400 sm:text-sm'>
+
+        <input
+          placeholder='Filter (Bis Datum)'
+          type='text'
+          #toDate
+          [value]='filter?.to | date:"dd.MM.yyyy"'
+          (keydown.enter)='updateToDate(toDate?.value)'
+          (blur)='updateToDate(toDate?.value)'
+          class='mr-3 appearance-none flex flex-shrink-0 flex-grow-0 w-64 bg-white border border-gray-300 rounded-md shadow-sm pl-3 pr-10 py-2 text-left cursor-default focus:outline-none focus:ring-1 focus:ring-blue-400 sm:text-sm'>
+
+        <eb-select
+          class='mr-3'
+          [selected]='selectedEmployee'
+          [options]='employees'
+          [optionTemplate]='optionTemplate'
+          [valueTemplate]='valueTemplate'
+          [focusTrigger]='subject | async'
+          (selectionChanged)='selectEmployee($event)'
+          [selectedClasses]='["bg-blue-700", "text-blue-100"]'
+          placeholder='Mitarbeiter auswählen'>
+        </eb-select>
+
+        <ng-template #valueTemplate let-selectedOption let-highlighted="highlighted">
+          <span [ngClass]='highlighted ? "text-gray-900" : "text-gray-700"'>{{ selectedOption.name }}</span>
+        </ng-template>
+
+        <ng-template #optionTemplate let-option let-highlighted="highlighted">
+          <span [ngClass]='highlighted ? "text-white" : "text-gray-700"'>{{ option.name }}</span>
+        </ng-template>
+
+        <button ebButton [size]="'m'" (click)='create.emit()'>Erfassen</button>
+      </div>
+    </div>
+  </div>
+</div>

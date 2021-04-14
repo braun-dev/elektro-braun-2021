@@ -1,0 +1,17 @@
+<div class='flex flex-1 items-center bg-white focus-within:ring-1 rounded focus-within:ring-blue-400'>
+  <label class='w-full' [formGroup]='formGroup'>
+    <input
+      type='text'
+      #inputControl
+      [formControlName]='controlName'
+      (keydown.enter)='blurred.emit(formGroup[controlName].value)'
+      (blur)='blurred.emit(formGroup[controlName].value)'
+      class='
+        pl-3 pr-2 py-2 w-full
+        h-full text-gray-900
+        appearance-none outline-none rounded bg-gray-100
+        text-left cursor-default
+        focus:outline-none sm:text-sm'>
+  </label>
+</div>
+

@@ -1,0 +1,53 @@
+<div class="flex flex-col h-auto w-full" *ngIf='stats'>
+  <div class="-my-2 overflow-x-auto">
+    <div class="py-2 align-middle inline-block min-w-full">
+      <div class="overflow-hidden">
+        <table class="min-w-full" style='table-layout: fixed;'>
+          <thead>
+          <tr>
+            <th scope="col" style='min-width: 14rem;' class="pl-12 pr-6 py-3 w-96 text-left">
+              <span class='block text-sm font-semibold text-gray-50 uppercase tracking-wider leading-4'>Gesamt</span>
+              <span class='-mt-1 text-blue-100 text-xs tracking-normal lowercase font-light'>
+                  {{ stats.range.from | date:'dd.MM.yyyy' }} - {{ stats.range.to | date:'dd.MM.yyyy' }}
+                </span>
+            </th>
+            <th scope="col" class="px-6 py-3 w-28 text-left text-sm font-medium text-gray-50 uppercase tracking-wider">
+              <span style='min-width: 3rem;'>{{ stats.total | number:'1.2-2' }}</span>
+            </th>
+            <th scope="col" class="px-6 py-3 w-28 text-left text-sm font-medium text-gray-50 uppercase tracking-wider">
+              <span style='min-width: 3rem;'>{{ stats.regular | number:'1.2-2' }}</span>
+            </th>
+            <th scope="col" style='min-width: 3rem;' class="px-6 py-3 w-28 text-left text-sm font-medium text-gray-50 uppercase tracking-wider">
+              {{ stats.overtime | number:'1.2-2' }}
+            </th>
+            <th scope="col" style='min-width: 3rem;' class="px-6 py-3 w-28 text-left text-sm font-medium text-gray-50 uppercase tracking-wider">
+              {{ stats.lessTime | number:'1.2-2' }}
+            </th>
+            <th scope="col" style='min-width: 3rem;' class="px-6 py-3 w-28 text-left text-sm font-medium text-gray-100 uppercase tracking-wider">
+              {{ stats.holiday | number:'1.2-2' }}
+            </th>
+            <th scope="col" style='min-width: 3rem;' class="px-6 py-3 w-28 text-left text-sm font-medium text-gray-100 uppercase tracking-wider">
+              {{ stats.sickLeave | number:'1.2-2' }}
+            </th>
+            <th scope="col" style='min-width: 3rem;' class="px-6 py-3 w-16 text-left text-sm font-medium text-gray-100 uppercase tracking-wider">
+              {{ stats.balance | number:'1.2-2' }}
+            </th>
+            <th scope="col" style='min-height: 3rem;' class="pr-12 pl-6 py-3 text-right text-sm font-medium text-gray-100" *ngIf='vm$ | async as viewModel'>
+              <div *ngIf='viewModel.selectedEmployee' class='flex w-full items-center justify-end'>
+                <svg
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  class='text-gray-50 h-10 w-10 cursor-pointer hover:text-blue-900 hover:bg-white opacity-95 rounded p-2 ease-in-out duration-100 transition-colors'
+                  (click)='onExport(viewModel.reports, viewModel.selectedEmployee, viewModel.filter)' >
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                </svg>
+              </div>
+            </th>
+          </tr>
+          </thead>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

@@ -14,7 +14,25 @@
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
-    "paths": {}
+    "paths": {
+      "@elektro-braun/time-tracking/data": [
+        "libs/time-tracking/data/src/index.ts"
+      ],
+      "@elektro-braun/auth/domain": ["libs/auth/domain/src/index.ts"],
+      "@elektro-braun/auth/feature-login": [
+        "libs/auth/feature-login/src/index.ts"
+      ],
+      "@elektro-braun/auth/feature-register": [
+        "libs/auth/feature-register/src/index.ts"
+      ],
+      "@elektro-braun/shared/util-data": ["libs/shared/util-data/src/index.ts"],
+      "@elektro-braun/time-tracking/domain": [
+        "libs/time-tracking/domain/src/index.ts"
+      ],
+      "@elektro-braun/time-tracking/feature": [
+        "libs/time-tracking/feature/src/index.ts"
+      ]
+    }
   },
   "exclude": ["node_modules", "tmp"]
 }

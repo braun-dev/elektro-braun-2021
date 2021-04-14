@@ -1,0 +1,69 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .eb-button-primary {
+    @apply
+    font-semibold bg-blue-600
+    appearance-none outline-none
+    focus:outline-none focus:ring-0 focus:shadow-none hover:bg-blue-700
+  }
+
+  .eb-button-secondary {
+    @apply
+    appearance-none outline-none
+    font-semibold bg-indigo-500
+    focus:outline-none focus:ring-0 focus:shadow-none hover:bg-indigo-600
+  }
+
+  .eb-button-outline {
+    @apply
+    font-semibold text-blue-600
+    appearance-none outline-none border border-blue-600
+    focus:outline-none focus:ring-0 focus:shadow-none hover:bg-blue-100
+  }
+
+  .eb-button-ghost {
+    @apply
+    font-semibold text-blue-600
+    appearance-none outline-none
+    focus:outline-none focus:ring-0 focus:shadow-none hover:bg-blue-100
+  }
+
+  .eb-button--s {
+    @apply px-3 py-1 text-sm
+  }
+
+  .eb-button--m {
+    @apply px-4 py-2
+  }
+
+  .eb-button--l {
+    @apply px-5 py-3 text-lg
+  }
+
+  .eb-button--text-dark {
+    @apply text-gray-900;
+  }
+
+  .eb-button--text-light {
+    @apply text-white;
+  }
+
+  .eb-button--round-s{
+    @apply rounded-sm;
+  }
+
+  .eb-button--round-m {
+    @apply rounded;
+  }
+
+  .eb-button--round-l {
+    @apply rounded-md
+  }
+
+  .eb-button--round-xl {
+    @apply rounded-lg
+  }
+}
