@@ -1,1 +1,2 @@
-export * from './lib/holidays-api';
+export * from './lib/holidays-api.service';
+

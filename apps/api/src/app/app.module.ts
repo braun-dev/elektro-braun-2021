@@ -3,22 +3,26 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { MONGOOSE_URI } from './config/constants';
 import { ConfigModule } from '@nestjs/config';
-import { MongooseModule } from '@nestjs/mongoose';
 import { EmployeeModule } from './modules/employee/employee.module';
 import { TimeReportModule } from './modules/time-report/time-report.module';
 import { UserModule } from './modules/users/user.module';
 import { AuthModule } from './modules/auth/auth.module';
+import { TypegooseModule } from 'nestjs-typegoose';
+import { HolidayModule } from './modules/holiday/holiday.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot(),
-    MongooseModule.forRoot(MONGOOSE_URI, { useUnifiedTopology: true, useNewUrlParser: true }),
+    TypegooseModule.forRoot(MONGOOSE_URI, { useNewUrlParser: true, useUnifiedTopology: true }),
     UserModule,
     AuthModule,
     EmployeeModule,
-    TimeReportModule
+    TimeReportModule,
+    HolidayModule
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService
+  ],
 })
 export class AppModule {}

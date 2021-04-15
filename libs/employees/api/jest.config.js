@@ -1,5 +1,5 @@
 module.exports = {
-  displayName: 'employees-employees-api',
+  displayName: 'employees-api',
   preset: '../../../jest.preset.js',
   setupFilesAfterEnv: ['<rootDir>/src/test-setup.ts'],
   globals: {
@@ -14,7 +14,7 @@ module.exports = {
       },
     },
   },
-  coverageDirectory: '../../../coverage/libs/employees/employees-api',
+  coverageDirectory: '../../../coverage/libs/employees/api',
   snapshotSerializers: [
     'jest-preset-angular/build/AngularNoNgAttributesSnapshotSerializer.js',
     'jest-preset-angular/build/AngularSnapshotSerializer.js',

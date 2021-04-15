@@ -1,1 +1,58 @@
-<p>table works!</p>
+<div class="flex flex-col h-full flex-grow flex-shrink-0">
+  <div class="-my-2 overflow-x-auto h-full">
+    <div class="py-2 align-middle inline-block min-w-full h-full">
+      <div class="overflow-hidden border-b border-gray-200">
+        <table class="min-w-full bg-white divide-y divide-gray-200 h-full" style='table-layout: fixed;'>
+
+          <!-- Table Content -->
+          <ng-container *ngIf='!loading'>
+            <tbody class="bg-white divide-y divide-gray-200" @tableEntrance>
+              <ng-container *ngIf='reports && reports?.length > 0'>
+                <tr ebTableRow
+                    *ngFor='let report of reports; trackBy: trackByFn'
+                    [report]='report'
+                    (update)='updateReport($event)'
+                    (delete)='deleteReport($event)'>
+                </tr>
+              </ng-container>
+
+              <ng-container *ngIf='reports?.length === 0 && !insertActive'>
+                <tr class='h-40'>
+                  <td class='h-full w-full h-40 py-6' colspan='9'>
+                    <div class='grid place-items-center h-full text-sm font-light w-full text-gray-400 text-center'>
+                        Noch keine Arbeitszeiten erfasst!
+                    </div>
+                  </td>
+                </tr>
+              </ng-container>
+
+              <tr ebTableRow
+                  [report]='null'
+                  [mode]='"create"'
+                  (create)='createReport($event)'
+                  *ngIf='insertActive'>
+              </tr>
+            </tbody>
+          </ng-container>
+
+          <!-- Skeleton Loading Template -->
+          <ng-container *ngIf='loading'>
+            <tbody class='bg-white divide-y divide-gray-200'>
+              <tr ebSkeletonTableRow @fade></tr>
+              <tr ebSkeletonTableRow @fade></tr>
+              <tr ebSkeletonTableRow @fade></tr>
+              <tr ebSkeletonTableRow @fade></tr>
+              <tr ebSkeletonTableRow @fade></tr>
+              <tr ebSkeletonTableRow @fade></tr>
+              <tr ebSkeletonTableRow @fade></tr>
+              <tr ebSkeletonTableRow @fade></tr>
+              <tr ebSkeletonTableRow @fade></tr>
+              <tr ebSkeletonTableRow @fade></tr>
+            </tbody>
+          </ng-container>
+
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

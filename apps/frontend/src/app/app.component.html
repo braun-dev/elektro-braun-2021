@@ -1,1 +1,33 @@
-<router-outlet></router-outlet>
+<div class='h-screen overflow-hidden flex flex-col flex-grow'>
+  <div
+    class='flex items-center justify-between px-8 w-full h-16 py-4 bg-gray-900 text-white sticky top-0 left-0 right-0'
+    *ngIf='isAuthenticated$ | async'>
+    <strong>Elektro Braun</strong>
+    <div class='flex justify-end items-center space-x-8 text-sm text-gray-100'>
+      <div
+        class='py-2 px-4 rounded cursor-pointer select-none hover:bg-gray-800'
+        (click)='navigateTo("employees")'>
+        Mitarbeiter
+      </div>
+      <div
+        class='py-2 px-4 rounded cursor-pointer select-none hover:bg-gray-800'
+        (click)='navigateTo("users")'>
+        Benutzer
+      </div>
+      <div
+        class='py-2 px-4 rounded cursor-pointer select-none hover:bg-gray-800'
+        (click)='navigateTo("time-tracking")'>
+        Zeiterfassung
+      </div>
+      <div
+        class='py-2 px-4 rounded cursor-pointer text-red-400 select-none hover:bg-gray-800'
+        (click)='logout()'>
+        Abmelden
+      </div>
+    </div>
+  </div>
+
+  <main class='flex flex-col flex-grow h-auto overflow-y-auto' [@routeTransition]='prepareRoute(outlet)'>
+    <router-outlet #outlet='outlet'></router-outlet>
+  </main>
+</div>

@@ -1,11 +1,8 @@
-import * as fromRouter from '@ngrx/router-store';
 import { ActionReducerMap } from '@ngrx/store';
-import { routerReducer } from '@ngrx/router-store';
+import { appRouterReducer, RouterState } from '@elektro-braun/shared/util-router-state';
 
-export interface AppState {
-  router: fromRouter.RouterReducerState
-}
+export type AppState = RouterState;
 
 export const reducers: ActionReducerMap<AppState> = {
-  router: routerReducer
+  ...appRouterReducer
 }

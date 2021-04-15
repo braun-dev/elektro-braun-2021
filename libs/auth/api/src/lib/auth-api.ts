@@ -1,3 +1,7 @@
-export function authApi(): string {
-  return 'auth-api';
-}
+import { AuthGuard, AuthFacade, actions as AuthActions } from '@elektro-braun/auth/domain';
+
+export {
+  AuthGuard,
+  AuthFacade,
+  AuthActions
+};

@@ -16,19 +16,29 @@
     }
   },
   "projects": {
-    "api-time-tracking": { "tags": [] },
-    "frontend-time-tracking": { "tags": [] },
-    "frontend-time-tracking-e2e": {
-      "tags": [],
-      "implicitDependencies": ["frontend-time-tracking"]
-    },
+    "api": { "tags": [] },
     "auth-domain": { "tags": ["domain:auth", "type:domain-logic"] },
-    "auth-feature-login": { "tags": ["domain:auth", "type:feature"] },
-    "auth-feature-register": { "tags": ["domain:auth", "type:feature"] },
-    "shared-util-data": { "tags": ["domain:shared", "type:util"] },
+    "auth-feature": { "tags": ["domain:auth", "type:feature"] },
     "time-tracking-domain": {
       "tags": ["domain:time-tracking", "type:domain-logic"]
     },
-    "time-tracking-feature": { "tags": ["domain:time-tracking", "type:feature"] }
+    "time-tracking-feature": {
+      "tags": ["domain:time-tracking", "type:feature"]
+    },
+    "shared-util-data": { "tags": ["domain:shared", "type:util"] },
+    "frontend": { "tags": ["type:app"] },
+    "frontend-e2e": { "tags": [], "implicitDependencies": ["frontend"] },
+    "shared-ui-components": { "tags": ["domain:shared", "type:ui"] },
+    "users-domain": { "tags": ["domain:users", "type:domain-logic"] },
+    "employees-domain": { "tags": ["domain:employees", "type:domain-logic"] },
+    "employees-feature": { "tags": ["domain:employees", "type:feature"] },
+    "users-feature": { "tags": ["domain:users", "type:feature"] },
+    "shared-util-networking": { "tags": ["domain:shared", "type:util"] },
+    "shared-util-router-state": { "tags": ["domain:shared", "type:util"] },
+    "shared-util-date": { "tags": ["domain:shared", "type:util"] },
+    "employees-api": { "tags": ["domain:employees/api", "type:api"] },
+    "holidays-domain": { "tags": ["domain:holidays", "type:domain-logic"] },
+    "holidays-api": { "tags": [] },
+    "auth-api": { "tags": ["domain:auth/api", "type:api"]}
   }
 }

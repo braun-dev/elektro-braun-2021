@@ -1,16 +1,12 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
 @Component({
   selector: 'eb-number-cell',
-  templateUrl: './number-cell.component.html',
-  styleUrls: ['./number-cell.component.css'],
+  template: `<span [ngClass]='class'>{{ value | number: '1.2-2' }}</span>`,
+  styleUrls: [],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class NumberCellComponent implements OnInit {
-
-  constructor() { }
-
-  ngOnInit(): void {
-  }
-
+export class NumberCellComponent {
+  @Input() value: number | null = null;
+  @Input() class = '';
 }

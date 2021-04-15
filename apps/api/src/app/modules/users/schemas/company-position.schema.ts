@@ -1,15 +1,9 @@
-import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
+import { prop } from '@typegoose/typegoose';
 
-export type CompanyPositionDocument = CompanyPositionModel & Document;
-
-@Schema()
 export class CompanyPositionModel {
-  @Prop({ required: true })
+  @prop({ required: true })
   name: string;
 
-  @Prop()
+  @prop()
   description: string;
 }
-
-export const CompanyPositionSchema = SchemaFactory.createForClass(CompanyPositionModel);

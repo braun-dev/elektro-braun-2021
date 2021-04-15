@@ -1,16 +1,9 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 @Component({
   selector: 'elektro-braun-time-tracking',
-  templateUrl: './time-tracking.component.html',
-  styleUrls: ['./time-tracking.component.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  template: `<router-outlet></router-outlet> `,
+  styles: [ ':host { min-height: 100%; background-color: #FFFFFF; }' ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class TimeTrackingComponent implements OnInit {
-
-  constructor() { }
-
-  ngOnInit(): void {
-  }
-
-}
+export class TimeTrackingComponent {}

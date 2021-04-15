@@ -1,40 +1,32 @@
-import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
-import { SCHEMA_CONFIG } from '../../../config/constants';
+import { prop } from '@typegoose/typegoose';
 
-export type TimeReportDocument = TimeReportModel & Document;
-
-@Schema(SCHEMA_CONFIG)
 export class TimeReportModel {
-  static collectionName = 'timereports';
-  id?: string;
+  id!: string;
 
-  @Prop({ type: Date, required: true })
+  @prop({ type: Date, required: true })
   date: Date;
 
-  @Prop({ type: String, required: true })
+  @prop({ required: true })
   employeeId: string;
 
-  @Prop({ required: true })
+  @prop({ required: true })
   total: number;
 
-  @Prop({ required: true })
+  @prop({ required: true })
   regular: number;
 
-  @Prop({ required: true, default: 0 })
+  @prop({ required: true, default: 0 })
   overtime: number;
 
-  @Prop({ required: true, default: 0 })
+  @prop({ required: true, default: 0 })
   compTime: number;
 
-  @Prop({ required: true, default: 0 })
+  @prop({ required: true, default: 0 })
   sickLeave: number;
 
-  @Prop({ required: true, default: 0 })
+  @prop({ required: true, default: 0 })
   holiday: number;
 
-  @Prop()
+  @prop()
   description: string;
 }
-
-export const TimeReportSchema = SchemaFactory.createForClass(TimeReportModel);

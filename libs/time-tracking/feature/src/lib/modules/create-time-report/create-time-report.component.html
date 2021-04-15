@@ -1,1 +1,88 @@
-<p>create-time-report works!</p>
+<div class='h-full flex flex-col flex-grow pb-6' *ngIf='vm$ | async as vm'>
+
+  <!-- Header / Toolbar -->
+  <header class='flex flex-1 flex-nowrap justify-between items-center'>
+    <div class='flex flex-col justify-center mt-8 px-8'>
+      <h1 class='text-2xl text-gray-900'>Arbeitszeit erfassen</h1>
+      <div class='text-sm text-gray-700' *ngIf='vm.employee as employee'>{{ employee.name }}</div>
+    </div>
+    <div>
+      <button ebButton size='s' (click)='saveReports()'>Speichern</button>
+    </div>
+  </header>
+
+  <!-- Content -->
+  <div class='flex flex-grow flex-col h-full px-8 mt-4 mt-2'>
+    <div class='flex flex-grow-0 flex-shrink-0 items-center mt-2'>
+      <elektro-braun-input-form (record)='onRecord($event, vm.employee.id)'></elektro-braun-input-form>
+    </div>
+
+    <!-- Content -->
+    <div class='flex flex-col flex-grow ml-2'>
+      <ng-container *ngIf='vm.reports.length > 0; else placeholder'>
+        <elektro-braun-report-view
+          [class.mt-2]='!first'
+          *ngFor='let report of vm.reports; let first = first; trackBy: trackByFn'
+          [report]='report'
+          (delete)='onDelete($event)'>
+        </elektro-braun-report-view>
+      </ng-container>
+      <ng-template #placeholder>
+        <div class='items-center justify-center flex-grow flex text-base text-gray-700'>
+          Noch keine Aufzeichnungen vorhanden
+        </div>
+      </ng-template>
+    </div>
+  </div>
+
+  <!-- Summary / Stats -->
+  <div class='fixed bottom-0 left-0 right-0'>
+    <div class='flex flex-row flex-shrink-0 h-full flex-grow-1 w-full rounded justify-between bg-white'>
+
+      <div class='flex flex-grow py-2 ml-8'>
+        <div class='w-full flex flex-col py-2 px-2'>
+          <div class='w-full font-semibold text-gray-700 text-base mb-1'>Erfasste Gesamtzeit</div>
+          <div class='w-full font-light text-gray-500 text-sm'>23.03.2021 - 03.04.2021</div>
+        </div>
+      </div>
+
+      <!-- STATS / SUM -->
+      <div class='grid grid-cols-6 mx-16'>
+        <div class='flex flex-col w-full justify-center bg-white rounded py-2 px-2 border-gray-200 border-r'>
+          <span class='font-semibold text-xl text-gray-700 mb-1'>{{ vm.summary.totalHours }}</span>
+          <span class='font-normal text-xs text-gray-500'>Gesamtstunden</span>
+        </div>
+
+        <div class='flex flex-col w-full justify-center rounded bg-white py-2 px-2 border-gray-200 border-r'>
+          <span class='font-semibold text-xl text-gray-700 mb-1'>{{ vm.summary.overtime }}</span>
+          <span class='font-normal text-xs text-gray-500'>Überstunden</span>
+        </div>
+
+        <div class='flex flex-col w-full justify-center bg-white rounded py-2 px-2 border-gray-200 border-r'>
+          <span class='font-semibold text-xl text-gray-700 mb-1'>{{ vm.summary.lessHours }}</span>
+          <span class='font-normal text-xs text-gray-500'>Zeitausgleich</span>
+        </div>
+
+        <div class='flex flex-col w-full justify-center bg-white rounded py-2 px-2 border-gray-200 border-r'>
+          <span class='font-semibold text-xl text-gray-700 mb-1'>{{ vm.summary.overtime }}</span>
+          <span class='font-normal text-xs text-gray-500'>Urlaub</span>
+        </div>
+
+        <div class='flex flex-col w-full justify-center bg-white rounded py-2 px-2 border-gray-200 border-r'>
+          <span class='font-semibold text-xl text-gray-700 mb-1'>{{ vm.summary.sickLeave }}</span>
+          <span class='font-normal text-xs text-gray-500'>Krankenstand</span>
+        </div>
+
+        <div class='flex flex-col w-full justify-center bg-white rounded py-2 px-2 border-gray-200 border-r'>
+          <span class='font-semibold text-xl text-gray-700 mb-1'>{{ vm.summary.balance }}</span>
+          <span class='font-normal text-xs text-gray-500'>Summe</span>
+        </div>
+      </div>
+
+      <!-- END / ACTIONS -->
+      <div class='flex flex-row flex-shrink-0 flex-grow items-center py-2 items-end justify-end'>
+        End
+      </div>
+    </div>
+  </div>
+</div>

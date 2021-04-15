@@ -1,37 +1,48 @@
-import {
-  Component,
-  OnInit,
-  ChangeDetectionStrategy,
-  Input,
-  Output,
-  EventEmitter,
-  ViewChild,
-  ElementRef
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, Input, Output, ViewChild, EventEmitter } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'eb-table-input',
   templateUrl: './table-input.component.html',
   styleUrls: ['./table-input.component.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TableInputComponent {
 
-  @Input() formGroup: FormGroup | null = null;
-  @Input() controlName: string;
-  @Input() placeholder = '';
+  private _readonly = true;
 
+  @ViewChild('inputControl', { static: false, read: ElementRef }) readonly element: ElementRef<HTMLElement> | null = null;
+
+  @Input() readonly formGroup: FormGroup | null = null;
+  @Input() readonly controlName: string;
+  @Input() readonly placeholder = '';
+  @Input() readonly placeholderType: 'number' | 'string' = 'number';
+  @Input() readonly type: 'normal' | 'date' = 'normal';
   @Input()
-  set triggerFocus(_: void | null | unknown | undefined) {
-    if (!this.element) { return }
-    this.element.nativeElement.focus();
-    console.log('focusing input')
+  get readonly() { return this._readonly; }
+  set readonly(value: boolean) {
+    if (this._readonly !== value) {
+      this._readonly = value;
+    }
   }
 
-  @ViewChild('inputControl', { static: true, read: ElementRef }) private element: ElementRef<HTMLElement> | null = null;
+  @Input()
+  set triggerFocus(value: boolean) {
+    if (this.element && value) {
+      this.element.nativeElement.focus()
+    }
+  }
 
-  @Output() blurred = new EventEmitter<string>()
+  @Output() readonly nextDate = new EventEmitter<void>();
+  @Output() readonly prevDate = new EventEmitter<void>();
 
-  constructor() {}
+  checkIfCanFocus($event: Event): void {
+    if (!this._readonly) {
+      return;
+    }
+
+    $event?.preventDefault();
+    $event.stopPropagation();
+    this.element?.nativeElement?.blur();
+  }
 }

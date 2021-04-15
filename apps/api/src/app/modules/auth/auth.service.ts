@@ -1,9 +1,10 @@
 import { Injectable, InternalServerErrorException, NotFoundException, UnauthorizedException } from '@nestjs/common';
+// eslint-disable-next-line @nrwl/nx/enforce-module-boundaries
 import { AuthenticatedUser, User } from '@elektro-braun/shared/util-data';
 import { UsersService } from '../users/user.service';
 import { LoginUserDto } from '../users/dto/login-user.dto';
 import { TokenService } from './token.service';
-import { JwtModel } from './schemas/jwt.schema';
+import { TokenModel } from './schemas/token.schema';
 import { UserModel } from '../users/schemas/user.schema';
 import { CreateUserDto } from '../users/dto/create-user.dto';
 import { BcryptService } from './bcrypt.service';
@@ -33,9 +34,9 @@ export class AuthService {
     return user;
   }
 
-  async login(user: User): Promise<AuthenticatedUser> {
+  async login(user: User): Promise<{ user: User, tokens: TokenModel }> {
     const tokens = await this.tokenService.createTokens(user);
-    return { ...user, tokens };
+    return { user, tokens };
   }
 
   async register(createUserDto: CreateUserDto): Promise<AuthenticatedUser> {
@@ -48,7 +49,7 @@ export class AuthService {
     }
 
     // generate JWTs
-    const tokens: JwtModel = await this.tokenService.createTokens({
+    const tokens: TokenModel = await this.tokenService.createTokens({
       id: registeredUser.id || (registeredUser as any)?._id,
       email: registeredUser.email,
       name: registeredUser.name,

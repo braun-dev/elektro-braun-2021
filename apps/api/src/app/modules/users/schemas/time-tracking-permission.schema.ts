@@ -1,15 +1,9 @@
-import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
+import { prop } from '@typegoose/typegoose';
 
-export type TimeTrackingPermissionDocument = TimeTrackingPermissionModel & Document;
-
-@Schema()
 export class TimeTrackingPermissionModel {
-  @Prop({ required: true })
+  @prop({ required: true })
   name: string;
 
-  @Prop()
+  @prop()
   description: string;
 }
-
-export const TimeTrackingPermissionSchema = SchemaFactory.createForClass(TimeTrackingPermissionModel);

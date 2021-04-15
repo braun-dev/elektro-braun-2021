@@ -1,1 +1,76 @@
-<p>input-form works!</p>
+<form [formGroup]='form' autocomplete='off'>
+  <div class='grid grid-cols-8 bg-white rounded-sm' (keydown.enter)='onRecord()'>
+    <div class='flex flex-col px-2 py-1 border border-gray-400 border-r-0 text-gray-400 focus-within:text-gray-900'>
+      <label for='date-input' class='text-sm font-semibold'>Datum</label>
+      <input
+        type='text'
+        formControlName='date'
+        autocomplete='off'
+        id='date-input'
+        class='w-full appearance-none outline-none focus:outline-none bg-white text-gray-900 text-base'>
+    </div>
+    <div class='flex flex-col px-2 py-1 border border-gray-400 border-r-0 text-gray-400 focus-within:text-gray-900'>
+      <label for='total-input' class='text-sm font-semibold'>Gesamt</label>
+      <input
+        type='number'
+        formControlName='total'
+        autocomplete='off'
+        id='total-input'
+        class='w-full appearance-none outline-none focus:outline-none bg-white text-gray-900 text-base'>
+    </div>
+    <div class='flex flex-col px-2 py-1 border border-gray-400 border-r-0 text-gray-400 focus-within:text-gray-900'>
+      <label for='regular-input' class='text-sm font-semibold'>Normal</label>
+      <input
+        type='number'
+        formControlName='regular'
+        autocomplete='off'
+        id='regular-input'
+        class='w-full appearance-none outline-none focus:outline-none bg-white text-gray-900 text-base'>
+    </div>
+    <div class='flex flex-col px-2 py-1 border border-gray-400 border-r-0 text-gray-400 focus-within:text-gray-900'>
+      <label for='overtime-input' class='text-sm font-semibold'>ÜS</label>
+      <input
+        type='number'
+        formControlName='overtime'
+        autocomplete='off'
+        id='overtime-input'
+        class='w-full appearance-none outline-none focus:outline-none bg-white text-gray-900 text-base'>
+    </div>
+    <div class='flex flex-col px-2 py-1 border border-gray-400 border-r-0 text-gray-400 focus-within:text-gray-900'>
+      <label for='lessTime-input' class='text-sm font-semibold'>Zeitausgleich</label>
+      <input
+        type='number'
+        formControlName='lessTime'
+        autocomplete='off'
+        id='lessTime-input'
+        class='w-full appearance-none outline-none focus:outline-none bg-white text-gray-900 text-base'>
+    </div>
+    <div class='flex flex-col px-2 py-1 border border-gray-400 border-r-0 text-gray-400 focus-within:text-gray-900'>
+      <label for='holiday-input' class='text-sm font-semibold'>Urlaub</label>
+      <input
+        type='number'
+        formControlName='holiday'
+        autocomplete='off'
+        id='holiday-input'
+        class='w-full appearance-none outline-none focus:outline-none bg-white text-gray-900 text-base'>
+    </div>
+    <div class='flex flex-col px-2 py-1 border border-gray-400 border-r-0 text-gray-400 focus-within:text-gray-900'>
+      <label for='sickLeave-input' class='text-sm font-semibold'>Krankenstand</label>
+      <input
+        type='number'
+        formControlName='sickLeave'
+        autocomplete='off'
+        id='sickLeave-input'
+        class='w-full appearance-none outline-none focus:outline-none bg-white text-gray-900 text-base'>
+    </div>
+    <div class='flex flex-col px-2 py-1 border border-gray-400 text-gray-400 focus-within:text-gray-900'>
+      <label for='note-input' class='text-sm font-semibold'>Anmerkung</label>
+      <input
+        type='text'
+        formControlName='note'
+        autocomplete='off'
+        id='note-input'
+        class='w-full appearance-none outline-none focus:outline-none bg-white text-gray-900 text-base'>
+    </div>
+  </div>
+</form>

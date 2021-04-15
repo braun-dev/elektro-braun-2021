@@ -15,23 +15,35 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@elektro-braun/time-tracking/data": [
-        "libs/time-tracking/data/src/index.ts"
-      ],
       "@elektro-braun/auth/domain": ["libs/auth/domain/src/index.ts"],
-      "@elektro-braun/auth/feature-login": [
-        "libs/auth/feature-login/src/index.ts"
-      ],
-      "@elektro-braun/auth/feature-register": [
-        "libs/auth/feature-register/src/index.ts"
-      ],
+      "@elektro-braun/auth/feature": ["libs/auth/feature/src/index.ts"],
       "@elektro-braun/shared/util-data": ["libs/shared/util-data/src/index.ts"],
       "@elektro-braun/time-tracking/domain": [
         "libs/time-tracking/domain/src/index.ts"
       ],
       "@elektro-braun/time-tracking/feature": [
         "libs/time-tracking/feature/src/index.ts"
-      ]
+      ],
+      "@elektro-braun/shared/ui-components": [
+        "libs/shared/ui-components/src/index.ts"
+      ],
+      "@elektro-braun/users/domain": ["libs/users/domain/src/index.ts"],
+      "@elektro-braun/employees/domain": ["libs/employees/domain/src/index.ts"],
+      "@elektro-braun/employees/feature": [
+        "libs/employees/feature/src/index.ts"
+      ],
+      "@elektro-braun/users/feature": ["libs/users/feature/src/index.ts"],
+      "@elektro-braun/shared/util-networking": [
+        "libs/shared/util-networking/src/index.ts"
+      ],
+      "@elektro-braun/shared/util-router-state": [
+        "libs/shared/util-router-state/src/index.ts"
+      ],
+      "@elektro-braun/shared/util-date": ["libs/shared/util-date/src/index.ts"],
+      "@elektro-braun/employees/api": ["libs/employees/api/src/index.ts"],
+      "@elektro-braun/holidays/domain": ["libs/holidays/domain/src/index.ts"],
+      "@elektro-braun/holidays/api": ["libs/holidays/api/src/index.ts"],
+      "@elektro-braun/auth/api": ["libs/auth/api/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

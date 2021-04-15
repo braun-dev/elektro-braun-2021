@@ -8,8 +8,8 @@ import { BcryptService } from './bcrypt.service';
 import { TokenService } from './token.service';
 import { LocalAuthGuard } from './guards/local-auth.guard';
 import { JwtModule } from '@nestjs/jwt';
-import { MongooseModule } from '@nestjs/mongoose';
-import { JwtModel, JwtSchema } from './schemas/jwt.schema';
+import { TokenModel } from './schemas/token.schema';
+import { TypegooseModule } from 'nestjs-typegoose';
 
 @Module({
   controllers: [
@@ -18,10 +18,10 @@ import { JwtModel, JwtSchema } from './schemas/jwt.schema';
   imports: [
     UserModule,
     PassportModule,
-    MongooseModule.forFeature([{ name: JwtModel.collectionName, schema: JwtSchema }]),
+    TypegooseModule.forFeature([{ typegooseClass: TokenModel, schemaOptions: { collection: 'tokens'} }]),
     JwtModule.register({
-      secret: 'test123',
-      signOptions: { expiresIn: '60s' },
+      secret: '_elektro-braun_$%?_zeiterfassung!',
+      signOptions: { expiresIn: '3600s' },
     }),
   ],
   providers: [

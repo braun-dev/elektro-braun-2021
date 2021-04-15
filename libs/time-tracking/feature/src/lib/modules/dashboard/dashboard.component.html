@@ -1,41 +1,38 @@
 <ng-container *ngIf='vm$ | async as vm'>
-  <div class='flex items-center justify-between mt-8 px-8 overflow-y-auto'>
-    <h1 class='text-2xl text-gray-900'>Erfasste Arbeitszeiten</h1>
-    <div>
-      <div class='flex flex-row items-center justify-end'>
-        <select class='bg-white p-2 rounded mr-4' [value]='vm?.selectedEmployee || vm.employees[0].name'
-                *ngIf='vm?.selectedEmployee || vm.employees?.length > 0'
-                (change)='select($event)'>
-          <option [value]='employee.id' *ngFor='let employee of vm.employees'>{{ employee.name }}</option>
-        </select>
+  <div class='pb-16'>
 
-        <button ebButton [size]="'s'" (click)='navigateToCreateTimeReport()'>Erfassen</button>
-      </div>
-    </div>
+    <!-- Header -->
+    <elektro-braun-header
+      [focusTrigger]='selectFocusTrigger$ | async'
+      [filter]='vm.filter'
+      [selectedEmployee]='vm.selectedEmployee'
+      [showInsert]='vm.showInsert'
+      [employees]='vm.employees'
+      (employeeChange)='selectEmployee($event)'
+      (dateChange)='onDateChanged($event)'
+      (create)='toggleEditMode($event)'
+    ></elektro-braun-header>
+
+    <!-- TABLE -->
+    <elektro-braun-table
+      [loading]='vm.loading'
+      [reports]='vm.reports'
+      [insertActive]='vm.showInsert'
+      (create)='onCreate($event, vm.selectedEmployee.id)'
+      (delete)='onDelete($event, vm.selectedEmployee.id)'
+      (update)='onUpdate($event, vm.selectedEmployee.id)'
+    ></elektro-braun-table>
+
+    <div class='h-0' #scrollableAnchor aria-hidden='true' *ngIf='vm.showInsert'></div>
   </div>
 
-  <div class='flex flex-col-items-center text-sm text-gray-800 border-b border-gray-200 w-full mt-8'>
-    <table class="table-fixed w-full overflow-x-scroll bg-white">
-      <thead>
-      <tr class='py-4 w-full bg-white border-t border-b border-gray-200 px-12'>
-        <th class="w-2/12 text-center py-4 pl-8">Datum</th>
-        <th class="w-2/12 text-right py-4">Gesamt</th>
-        <th class="w-2/12 text-right py-4">Normal</th>
-        <th class="w-2/12 text-right py-4">ÜS</th>
-        <th class="w-2/12 text-right py-4">ZA</th>
-        <th class="w-2/12 text-right py-4 pr-8">Krank</th>
-      </tr>
-      </thead>
-      <tbody *ngIf='vm?.reports'>
-      <tr *ngFor='let report of vm?.reports' class='py-4 w-full bg-white border-b border-gray-200 px-12'>
-        <td class='text-sm text-gray-600 text-center py-4 pl-8'>{{ report.date | date: 'dd.MM.yyyy' }}</td>
-        <td class='text-sm text-gray-600 text-right py-4'>{{ report.totalHours | number: '1.2-2' }}</td>
-        <td class='text-sm text-gray-600 text-right py-4'>{{ report.regularHours | number: '1.2-2' }}</td>
-        <td class='text-sm text-gray-600 text-right py-4'>{{ report.bonusTime | number: '1.2-2' }}</td>
-        <td class='text-sm text-gray-600 text-right py-4'>{{ report.lessTime | number: '1.2-2' }}</td>
-        <td class='text-sm text-gray-600 text-right py-4 pr-8'>{{ report.sickLeave | number: '1.2-2' }}</td>
-      </tr>
-      </tbody>
-    </table>
+  <!-- Stats Sticky Footer -->
+  <div class='fixed bottom-0 left-0 right-0 w-full flex items-center h-16 bg-blue-900'>
+    <ng-container *ngIf='vm?.selectedEmployee && stats$ | async as stats'>
+      <elektro-braun-report-stats [stats]='stats' (export)='onExport(vm.reports, vm.selectedEmployee, stats.range)'></elektro-braun-report-stats>
+    </ng-container>
   </div>
 </ng-container>
+
+
+

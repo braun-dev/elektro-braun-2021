@@ -1,5 +1,4 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { RegisterFacade } from '@elektro-braun/auth/domain';
 
 @Component({
   selector: 'elektro-braun-auth-register',
@@ -7,7 +6,5 @@ import { RegisterFacade } from '@elektro-braun/auth/domain';
   styleUrls: ['./register.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class RegisterComponent {
-  constructor(private registerFacade: RegisterFacade) {}
-}
+export class RegisterComponent {}
 

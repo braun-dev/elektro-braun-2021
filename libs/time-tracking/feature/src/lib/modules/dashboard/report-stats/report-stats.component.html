@@ -32,14 +32,14 @@
             <th scope="col" style='min-width: 3rem;' class="px-6 py-3 w-16 text-left text-sm font-medium text-gray-100 uppercase tracking-wider">
               {{ stats.balance | number:'1.2-2' }}
             </th>
-            <th scope="col" style='min-height: 3rem;' class="pr-12 pl-6 py-3 text-right text-sm font-medium text-gray-100" *ngIf='vm$ | async as viewModel'>
-              <div *ngIf='viewModel.selectedEmployee' class='flex w-full items-center justify-end'>
+            <th scope="col" style='min-height: 3rem;' class="pr-12 pl-6 py-3 text-right text-sm font-medium text-gray-100">
+              <div class='flex w-full items-center justify-end'>
                 <svg
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
                   class='text-gray-50 h-10 w-10 cursor-pointer hover:text-blue-900 hover:bg-white opacity-95 rounded p-2 ease-in-out duration-100 transition-colors'
-                  (click)='onExport(viewModel.reports, viewModel.selectedEmployee, viewModel.filter)' >
+                  (click)='export.emit()'>
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                 </svg>
               </div>

@@ -1,13 +1,15 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { DashboardComponent } from '@elektro-braun/employees/feature';
+import { DashboardComponent } from './dashboard.component';
+import { SharedUiComponentsModule } from '@elektro-braun/shared/ui-components';
 
 @NgModule({
-  declarations: [],
   imports: [
     CommonModule,
-    RouterModule.forChild([{ path: '', component: DashboardComponent }])
-  ]
+    RouterModule.forChild([{ path: '', component: DashboardComponent }]),
+    SharedUiComponentsModule
+  ],
+  declarations: [DashboardComponent],
 })
 export class DashboardModule { }

@@ -11,9 +11,7 @@ import { UsersFeatureComponent } from './users-feature.component';
     UsersDomainModule,
     RouterModule.forChild(FEATURE_ROUTES)
   ],
-  declarations: [
-    UsersFeatureComponent
-  ],
-  exports: [],
+  declarations: [UsersFeatureComponent],
+  exports: [UsersFeatureComponent],
 })
 export class UsersFeatureModule {}

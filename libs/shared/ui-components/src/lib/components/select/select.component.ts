@@ -1,6 +1,16 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, forwardRef, Input, Output } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  EventEmitter,
+  forwardRef, HostListener,
+  Input,
+  Output, TemplateRef,
+  ViewChild
+} from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { SelectAppearanceConfig } from './select-appearance-config';
 
 @Component({
   selector: 'eb-select',
@@ -17,7 +27,10 @@ import { BehaviorSubject } from 'rxjs';
 })
 export class SelectComponent<T extends { id: string | number; label: string }> implements ControlValueAccessor {
 
-  isOpen$ = new BehaviorSubject<boolean>(false);
+  @ViewChild('ebSelectControl', { static: true, read: ElementRef }) private selectControl: ElementRef | null = null;
+
+  readonly isOpen$ = new BehaviorSubject<boolean>(false);
+  readonly highlighted$ = new BehaviorSubject<T | null>(null);
 
   private _selectedItem: T | null = null;
   private _selectedClasses: string[] = [];
@@ -25,6 +38,18 @@ export class SelectComponent<T extends { id: string | number; label: string }> i
   @Input() placeholder = 'Auswählen';
   @Input() options: T[] = [];
   @Input() disabled = false;
+  @Input() labelKey = 'label'
+  @Input() valueTemplate: TemplateRef<any> | null = null;
+  @Input() optionTemplate: TemplateRef<any> | null = null;
+  @Input() closeAfterEnterSelection = true;
+  @Input() appearance: SelectAppearanceConfig = {} // TODO
+
+  @Input()
+  set focusTrigger(_: never) {
+    if (!this.selectControl) { return; }
+    this.selectControl.nativeElement.focus();
+    console.log('select focus trigger')
+  }
 
   @Input()
   set selectedClasses(classes: string[]) {
@@ -34,7 +59,7 @@ export class SelectComponent<T extends { id: string | number; label: string }> i
   @Input()
   get selected() { return this._selectedItem; }
   set selected(value: T | null) {
-    if (this._selectedItem === value) { return; }
+    if (this._selectedItem === value || this.disabled) { return; }
 
     if (!value) {
       this.onChange(null);
@@ -43,6 +68,7 @@ export class SelectComponent<T extends { id: string | number; label: string }> i
 
     this._selectedItem = value;
     this.onChange(this._selectedItem);
+    this.selectionChanged.emit(this._selectedItem);
   }
 
   @Output() selectionChanged = new EventEmitter<T>();
@@ -51,9 +77,33 @@ export class SelectComponent<T extends { id: string | number; label: string }> i
     return this._selectedClasses.join(' ');
   }
 
-  highlighted$ = new BehaviorSubject<T | null>(null);
+  select(item: T | null): void {
+    this.selected = item;
+    this.selectControl?.nativeElement?.focus();
+  }
 
-  highlightNextItem(): void {
+  selectHighlighted(event: Event): void {
+    event.stopPropagation();
+    event.preventDefault();
+    const highlighted = this.highlighted$.getValue();
+    if (highlighted === this._selectedItem || this.disabled) { return; }
+    this.selected = this.highlighted$.getValue();
+    if (this.closeAfterEnterSelection) {
+      this.isOpen$.next(false);
+    }
+  }
+
+  toggleDropdown(): void {
+    this.isOpen$.next(!this.isOpen$.value);
+    if (!this.isOpen$.value) {
+      this.selectControl?.nativeElement?.focus();
+    }
+  }
+
+  highlightNextItem(event: Event): void {
+    event.preventDefault();
+    event.stopPropagation();
+
     if (!this.options || this.options.length < 1) {
       return;
     }
@@ -74,7 +124,10 @@ export class SelectComponent<T extends { id: string | number; label: string }> i
     this.highlighted$.next(this.options[index + 1]);
   }
 
-  highlightPreviousItem(): void {
+  highlightPreviousItem(event: Event): void {
+    event.preventDefault();
+    event.stopPropagation();
+
     if (!this.options || this.options.length < 1) {
       return;
     }

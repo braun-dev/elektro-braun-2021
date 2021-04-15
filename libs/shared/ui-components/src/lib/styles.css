@@ -36,7 +36,7 @@
   }
 
   .eb-button--m {
-    @apply px-4 py-2
+    @apply px-4 py-2 text-sm
   }
 
   .eb-button--l {
@@ -65,5 +65,17 @@
 
   .eb-button--round-xl {
     @apply rounded-lg
+  }
+
+  .input-container {
+    @apply flex items-center space-x-2;
+  }
+
+  .input-container-vertical {
+    @apply flex flex-col space-y-1;
+  }
+
+  .input-label, label {
+    @apply w-full text-gray-700 text-sm font-medium;
   }
 }

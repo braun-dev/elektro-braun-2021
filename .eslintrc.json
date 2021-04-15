@@ -44,7 +44,8 @@
                 "onlyDependOnLibsWithTags": [
                   "type:ui",
                   "type:domain-logic",
-                  "type:util"
+                  "type:util",
+                  "type:api"
                 ]
               },
               {
@@ -77,7 +78,33 @@
                 "sourceTag": "domain:time-tracking",
                 "onlyDependOnLibsWithTags": [
                   "domain:time-tracking",
-                  "domain:shared"
+                  "domain:shared",
+                  "domain:employees/api",
+                  "domain:auth/api"
+                ]
+              },
+              {
+                "sourceTag": "domain:users",
+                "onlyDependOnLibsWithTags": [
+                  "domain:users",
+                  "domain:shared",
+                  "domain:auth/api"
+                ]
+              },
+              {
+                "sourceTag": "domain:employees",
+                "onlyDependOnLibsWithTags": [
+                  "domain:employees",
+                  "domain:shared",
+                  "domain:auth/api"
+                ]
+              },
+              {
+                "sourceTag": "domain:holidays",
+                "onlyDependOnLibsWithTags": [
+                  "domain:holidays",
+                  "domain:shared",
+                  "domain:auth/api"
                 ]
               }
             ]

@@ -1,1 +1,155 @@
-<p>table-row works!</p>
+<ng-container *ngIf='vm$ | async as vm'>
+  <td class="pl-12 pr-6 py-3 whitespace-nowrap w-96 focus-within:bg-gray-50 focus-within:border-r focus-within:border-l"
+      style='min-width: 14rem;'>
+    <div class="flex items-center flex-shrink-0 flex-grow-0" *ngIf='mode !== "create"; else inputDateTemplate'>
+      <div class="font-semibold uppercase py-1 px-2 flex flex-col flex-shrink-0 flex-grow-0 w-10 items-center rounded border border-gray-200">
+        <span class='text-gray-500' style='font-size: 0.675rem;'>KW</span>
+        <span class='text-xs text-gray-700'>{{ vm?.report?.date | date: 'ww' }}</span>
+      </div>
+      <div class="ml-4 w-full">
+        <div class="text-base w-full font-medium text-gray-800">
+          {{ vm?.report?.date | date: 'EEEE' }}
+        </div>
+        <div class="text-sm text-gray-500 font-light">
+          {{ vm?.report?.date | date: 'dd.MM.yyyy' }}
+        </div>
+      </div>
+    </div>
+
+    <ng-template #inputDateTemplate>
+      <div class="flex items-center flex-shrink-0 flex-grow-0 w-full">
+        <div class='text-red-500 w-12 text-center text-sm font-medium truncate mr-2' [title]='holiday?.localName' *ngIf='vm.viewMode !== "viewOrEdit" && vm?.holiday as holiday'>
+          {{ 'FT' }}
+        </div>
+        <eb-table-input
+          #firstControl
+          type='date'
+          placeholder='Datum'
+          placeholderType='string'
+          controlName='date'
+          (nextDate)='nextDate()'
+          (prevDate)='prevDate()'
+          [triggerFocus]='focusTrigger$ | async'
+          [readonly]='!vm.isEditing'
+          [formGroup]='form'>
+        </eb-table-input>
+      </div>
+    </ng-template>
+  </td>
+  <td style='min-width: 3rem;' class="px-6 py-4 whitespace-nowrap text-sm text-gray-700 w-28 focus-within:bg-gray-50 focus-within:border-r focus-within:border-l">
+    <!--{{ report.totalHours | number: '1.2-2' }}-->
+    <eb-table-input
+      #firstHourControl
+      placeholder='0.00'
+      controlName='total'
+      [triggerFocus]='focusTrigger$ | async'
+      [readonly]='!vm.isEditing'
+      [formGroup]='form'>
+    </eb-table-input>
+  </td>
+  <td style='min-width: 3rem;' class="px-6 py-4 whitespace-nowrap text-sm text-gray-700 w-28 focus-within:bg-gray-50 focus-within:border-r focus-within:border-l">
+    <!--{{ report.regularHours | number: '1.2-2' }}-->
+    <eb-table-input
+      placeholder='0.00'
+      controlName='regular'
+      [readonly]='!vm.isEditing'
+      [formGroup]='form'>
+    </eb-table-input>
+  </td>
+  <td style='min-width: 3rem;' class="px-6 py-4 whitespace-nowrap text-sm text-gray-700 w-28 focus-within:bg-gray-50 focus-within:border-r focus-within:border-l">
+    <!-- {{ report.bonusTime | number: '1.2-2' }} -->
+    <eb-table-input
+      placeholder='0.00'
+      controlName='overtime'
+      [readonly]='!vm.isEditing'
+      [formGroup]='form'>
+    </eb-table-input>
+  </td>
+  <td style='min-width: 3rem;'
+      class="px-6 py-4 whitespace-nowrap text-sm text-gray-700 w-28 focus-within:bg-gray-50 focus-within:border-r focus-within:border-l">
+    <!-- {{ report.lessTime | number: '1.2-2' }} -->
+    <eb-table-input
+      placeholder='0.00'
+      controlName='lessHours'
+      [readonly]='!vm.isEditing'
+      [formGroup]='form'>
+    </eb-table-input>
+  </td>
+  <td style='min-width: 3rem;'
+      class="px-6 py-4 whitespace-nowrap text-sm text-gray-700 w-28 focus-within:bg-gray-50 border-gray-200 focus-within:border-r focus-within:border-l">
+    <!-- {{ report.holiday | number: '1.2-2' }} -->
+    <eb-table-input
+      #holidayInput
+      placeholder='0.00'
+      controlName='holiday'
+      [readonly]='!vm.isEditing'
+      [formGroup]='form'>
+    </eb-table-input>
+  </td>
+  <td style='min-width: 3rem;' class="px-6 py-4 whitespace-nowrap text-sm text-gray-700 w-28 focus-within:bg-gray-50 focus-within:border-r focus-within:border-l">
+    <!--{{ report.sickLeave | number: '1.2-2' }}-->
+    <eb-table-input
+      placeholder='0.00'
+      controlName='sickLeave'
+      [readonly]='!vm.isEditing'
+      [formGroup]='form'>
+    </eb-table-input>
+  </td>
+  <td style='min-width: 3rem;' class="px-6 py-4 whitespace-nowrap w-16">
+    <ng-container *ngIf='(vm?.report?.totalHours - vm?.report?.regularHours) > 0'>
+    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+      +{{ (vm?.report?.totalHours - vm?.report?.regularHours) | number: '1.2-2' }}
+    </span>
+    </ng-container>
+    <ng-container *ngIf='(vm?.report?.totalHours - vm.report?.regularHours) < 0'>
+    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
+      {{ (vm?.report?.totalHours - vm?.report?.regularHours) | number: '1.2-2' }}
+    </span>
+    </ng-container>
+    <ng-container *ngIf='(vm?.report?.totalHours - vm?.report?.regularHours) === 0'>
+    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
+      {{ (vm?.report?.totalHours - vm?.report?.regularHours) | number: '1.2-2' }}
+    </span>
+    </ng-container>
+  </td>
+  <td class="pr-12 pl-6 py-4 whitespace-nowrap text-right text-sm font-medium select-none">
+    <div class="flex items-center justify-end flex-shrink-0 select-none">
+      <a *ngIf='mode === "create"' type='button' class="text-indigo-600 hover:text-indigo-900 cursor-pointer"
+         (click)='createReport()'>
+        Speichern
+      </a>
+      <ng-container *ngIf='mode === "viewOrEdit"'>
+        <span class="inline-block mr-3">
+          <svg xmlns="http://www.w3.org/2000/svg"
+               *ngIf='vm?.isEditing'
+               viewBox="0 0 20 20"
+               fill="currentColor"
+               class='cursor-pointer text-gray-400 hover:text-blue-600 h-5 w-6'
+               (click)='updateReport(vm?.report, vm.isEditing)'>
+              <path fill-rule='evenodd'
+                    d='M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z'
+                    clip-rule='evenodd' />
+          </svg>
+          <svg xmlns="http://www.w3.org/2000/svg"
+               *ngIf='!vm?.isEditing'
+               viewBox="0 0 20 20"
+               fill="currentColor"
+               class='cursor-pointer text-gray-400 hover:text-blue-600 h-5 w-6'
+               (click)='edit(vm.isEditing)'>
+            <path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z" />
+            <path fill-rule="evenodd" d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z" clip-rule="evenodd" />
+          </svg>
+        </span>
+        <span class='inline-block ml-3'>
+          <svg xmlns="http://www.w3.org/2000/svg"
+               viewBox="0 0 20 20" fill="currentColor"
+               class='cursor-pointer text-gray-400 hover:text-red-600 h-5 w-6'
+               (click)='deleteReport(vm?.report?.id)'>
+            <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" />
+          </svg>
+        </span>
+      </ng-container>
+
+    </div>
+  </td>
+</ng-container>

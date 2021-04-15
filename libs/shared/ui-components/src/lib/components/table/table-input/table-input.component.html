@@ -1,15 +1,19 @@
-<div class='flex flex-1 items-center bg-white focus-within:ring-1 rounded focus-within:ring-blue-400'>
-  <label class='w-full' [formGroup]='formGroup'>
+<div class='flex flex-1 items-center bg-transparent' [formGroup]='formGroup' style='min-width: 3rem;'>
+  <label class='w-full'>
     <input
       type='text'
       #inputControl
+      (keydown.arrowUp)='type === "date" && nextDate.emit()'
+      (keydown.arrowDown)='type === "date" && prevDate.emit()'
+      (focus)='checkIfCanFocus($event)'
+      [readOnly]='readonly'
+      [placeholder]='placeholderType === "number" ? (placeholder | number:"1.2-2") : placeholder'
       [formControlName]='controlName'
-      (keydown.enter)='blurred.emit(formGroup[controlName].value)'
-      (blur)='blurred.emit(formGroup[controlName].value)'
       class='
-        pl-3 pr-2 py-2 w-full
+        pl-2 pr-2 py-2 w-full
+        bg-transparent
         h-full text-gray-900
-        appearance-none outline-none rounded bg-gray-100
+        appearance-none outline-none
         text-left cursor-default
         focus:outline-none sm:text-sm'>
   </label>

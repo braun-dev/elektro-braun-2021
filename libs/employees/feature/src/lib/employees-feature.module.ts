@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { EmployeesDomainModule } from '@elektro-braun/employees/domain';
+import { actions as EmployeeActions, EmployeesDomainModule, EmployeesFacade } from '@elektro-braun/employees/domain';
 import { EmployeesFeatureComponent } from './employees-feature.component';
 import { RouterModule } from '@angular/router';
 import { FEATURE_ROUTES } from './employees-feature.routes';
@@ -12,6 +12,10 @@ import { FEATURE_ROUTES } from './employees-feature.routes';
     RouterModule.forChild(FEATURE_ROUTES)
   ],
   declarations: [EmployeesFeatureComponent],
-  exports: [],
+  exports: [EmployeesFeatureComponent],
 })
-export class EmployeesFeatureModule {}
+export class EmployeesFeatureModule {
+  constructor(private facade: EmployeesFacade) {
+    this.facade.dispatch(EmployeeActions.load())
+  }
+}

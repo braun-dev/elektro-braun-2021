@@ -1,29 +1,22 @@
-import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { TimeTrackingPermissionModel, TimeTrackingPermissionSchema } from './time-tracking-permission.schema';
-import { CompanyPositionModel, CompanyPositionSchema } from './company-position.schema';
-import { Document } from 'mongoose';
+import { prop } from '@typegoose/typegoose';
+import { TimeTrackingPermissionModel } from './time-tracking-permission.schema';
+import { CompanyPositionModel } from './company-position.schema';
 
-export type UserDocument = UserModel & Document;
-
-@Schema()
 export class UserModel {
-  static collectionName = 'users';
-  id?: string;
+  id!: string;
 
-  @Prop({ required: true })
+  @prop({ required: true, unique: true })
   email: string;
 
-  @Prop({ required: true })
+  @prop({ required: true })
   password: string;
 
-  @Prop({ required: true, type: [TimeTrackingPermissionSchema] })
+  @prop({ required: true, type: () => TimeTrackingPermissionModel })
   permissions: TimeTrackingPermissionModel[];
 
-  @Prop({ required: true })
+  @prop({ required: true })
   name: string;
 
-  @Prop({ required: true, type: CompanyPositionSchema })
+  @prop({ required: true })
   position: CompanyPositionModel;
 }
-
-export const UserSchema = SchemaFactory.createForClass(UserModel);

@@ -1,6 +1,6 @@
 module.exports = {
   projects: [
-    '<rootDir>/apps/frontend/time-tracking',
+    '<rootDir>/apps/frontends/time-tracking',
     '<rootDir>/apps/api/time-tracking',
     '<rootDir>/libs/time-tracking/test/test',
     '<rootDir>/libs/auth/domain',
@@ -9,5 +9,18 @@ module.exports = {
     '<rootDir>/libs/shared/util-data',
     '<rootDir>/libs/time-tracking/domain',
     '<rootDir>/libs/time-tracking/feature',
+    '<rootDir>/libs/auth/feature',
+    '<rootDir>/libs/shared/ui-components',
+    '<rootDir>/libs/users/domain',
+    '<rootDir>/libs/employees/domain',
+    '<rootDir>/libs/employees/feature',
+    '<rootDir>/libs/users/feature',
+    '<rootDir>/libs/shared/util-networking',
+    '<rootDir>/libs/shared/util-router-state',
+    '<rootDir>/libs/shared/util-date',
+    '<rootDir>/libs/employees/api',
+    '<rootDir>/libs/holidays/domain',
+    '<rootDir>/libs/holidays/api',
+    '<rootDir>/libs/auth/api',
   ],
 };

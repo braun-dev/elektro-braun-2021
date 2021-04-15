@@ -1,6 +1,6 @@
 import { prop } from '@typegoose/typegoose';
 
-export class JwtModel {
+export class TokenModel {
   id?: string;
 
   @prop({ required: true })

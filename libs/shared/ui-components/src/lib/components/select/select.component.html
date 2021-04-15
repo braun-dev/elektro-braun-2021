@@ -1,11 +1,33 @@
-<div class="mt-1 relative">
-  <button type="button" aria-haspopup="listbox" [attr.aria-expanded]='isOpen$ | async' class="relative w-full bg-white border border-gray-300 rounded-md shadow-sm pl-3 pr-10 py-2 text-left cursor-default focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+<div class="relative w-full">
+  <button
+    type='button'
+    aria-haspopup="listbox"
+    ebOutsideClick
+    [clickOutsideEnabled]='isOpen$ | async'
+    (clickOutside)='isOpen$.next(false)'
+    #ebSelectControl
+    (keydown.enter)='selectHighlighted($event)'
+    (keydown.arrowDown)='highlightNextItem($event)'
+    (keydown.arrowUp)='highlightPreviousItem($event)'
+    (click)='toggleDropdown()'
+    class="relative flex flex-shrink-0 flex-grow-0 w-64 bg-white border border-gray-300 rounded-md shadow-sm pl-3 pr-10 py-2 text-left cursor-default focus:outline-none focus:ring-1 focus:ring-blue-400 sm:text-sm">
+
+    <ng-container *ngIf='valueTemplate; else defaultValueTemplate'>
+      <ng-container *ngTemplateOutlet='valueTemplate; context: { $implicit: selected }'></ng-container>
+    </ng-container>
+
+    <ng-template #defaultValueTemplate>
       <span class="flex items-center">
-        <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="" class="flex-shrink-0 h-6 w-6 rounded-full">
+        <img
+          src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+          alt=""
+          class="flex-shrink-0 h-6 w-6 rounded-full">
         <span class="ml-3 block truncate">
-          {{ selected?.label || placeholder }}
+          {{ selected[labelKey] || placeholder }}
         </span>
       </span>
+    </ng-template>
+
     <span class="ml-3 absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
         <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
           <path fill-rule="evenodd" d="M10 3a1 1 0 01.707.293l3 3a1 1 0 01-1.414 1.414L10 5.414 7.707 7.707a1 1 0 01-1.414-1.414l3-3A1 1 0 0110 3zm-3.707 9.293a1 1 0 011.414 0L10 14.586l2.293-2.293a1 1 0 011.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd" />
@@ -30,29 +52,33 @@
       aria-labelledby="listbox-label"
       [attr.aria-activedescendant]="selected.id"
       class="max-h-56 rounded-md py-1 text-base ring-1 ring-black ring-opacity-5 overflow-auto focus:outline-none sm:text-sm">
-      <!--
-        Select option, manage highlight styles based on mouseenter/mouseleave and keyboard navigation.
 
-        Highlighted: "text-white bg-indigo-600", Not Highlighted: "text-gray-900"
-      -->
       <li *ngFor='let item of options'
           [id]='item.id'
-          [ngClass]='(highlighted$ | async) === item ? selectedClassesString : ""'
-          (keydown.arrowDown)='highlightNextItem()'
-          (keydown.arrowUp)='highlightPreviousItem()'
+          [ngClass]='(highlighted$ | async)?.id === item?.id ? selectedClassesString : "text-gray-900"'
+          (click)='select(item)'
           (mouseenter)='highlighted$.next(item)'
           (mouseleave)='highlighted$.next(null)'
           role='option'
-          class='text-gray-900 cursor-default select-none relative py-2 pl-3 pr-9'>
-        <div class='flex items-center'>
-          <img
-            src='https://images.unsplash.com/photo-1491528323818-fdd1faba62cc?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=facearea&amp;facepad=2&amp;w=256&amp;h=256&amp;q=80'
-            alt='' class='flex-shrink-0 h-6 w-6 rounded-full'>
-          <!-- Selected: "font-semibold", Not Selected: "font-normal" -->
-          <span class='ml-3 block font-normal truncate' [class.font-semibold]='selected === item'>
-              {{ item.label }}
-          </span>
-        </div>
+          class='cursor-default select-none relative py-2 pl-3 pr-9'>
+
+        <ng-container *ngIf='optionTemplate; else defaultOptionTemplate'>
+          <ng-container *ngTemplateOutlet='optionTemplate; context: {
+            $implicit: item,
+            highlighted: (highlighted$ | async) === item
+          }'></ng-container>
+        </ng-container>
+
+        <ng-template #defaultOptionTemplate>
+          <div class='flex items-center'>
+            <img
+              src='https://images.unsplash.com/photo-1491528323818-fdd1faba62cc?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=facearea&amp;facepad=2&amp;w=256&amp;h=256&amp;q=80'
+              alt='' class='flex-shrink-0 h-6 w-6 rounded-full'>
+            <span class='ml-3 block font-normal truncate' [class.font-semibold]='selected === item'>
+              {{ item[labelKey] }}
+            </span>
+          </div>
+        </ng-template>
 
         <span class='absolute inset-y-0 right-0 flex items-center pr-4' *ngIf='selected === item'>
             <svg class='h-5 w-5' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='currentColor'>

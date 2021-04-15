@@ -1,16 +1,10 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 @Component({
-  selector: 'elektro-braun-skeleton-table-row',
+  // eslint-disable-next-line @angular-eslint/component-selector
+  selector: 'tr[ebSkeletonTableRow]',
   templateUrl: './skeleton-table-row.component.html',
   styleUrls: ['./skeleton-table-row.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class SkeletonTableRowComponent implements OnInit {
-
-  constructor() { }
-
-  ngOnInit(): void {
-  }
-
-}
+export class SkeletonTableRowComponent {}

@@ -1,45 +1,70 @@
-import * as mongoose from 'mongoose';
-import { Document } from 'mongoose';
-import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { WorkingHoursModel, WorkingHoursSchema } from './working-hours.schema';
-import { SCHEMA_CONFIG } from '../../../config/constants';
+import { WorkingHoursModel } from './working-hours.schema';
+import { prop, Ref } from '@typegoose/typegoose';
+import { TimeReportModel } from '../../time-report/schemas/time-report.schema';
 
-export type EmployeeDocument = EmployeeModel & Document;
-
-@Schema(SCHEMA_CONFIG)
 export class EmployeeModel {
-  static collectionName = 'employees';
   id?: string;
 
-  @Prop({ required: true })
+  @prop({ required: true, unique: true })
   name: string;
 
-  @Prop()
-  age: number;
+  @prop({ required: true })
+  firstname: string;
 
-  @Prop()
-  phone: string;
+  @prop({ required: true })
+  lastname: string;
 
-  @Prop()
+  @prop({ required: true })
+  gender: string;
+
+  @prop()
   mail: string;
 
-  @Prop({ type: Date })
+  @prop()
+  mail2: string;
+
+  @prop()
+  phone: string;
+
+  @prop()
+  phone2: string;
+
+  @prop()
+  country: string;
+
+  @prop()
+  street: string;
+
+  @prop()
+  houseNumber: string;
+
+  @prop({ required: false })
+  zipCode: number;
+
+  @prop()
+  city: string;
+
+  @prop({ type: Date })
+  dateOfBirth: Date;
+
+  @prop({ type: Date })
   joiningDate: Date;
 
-  @Prop({ required: true, default: 25 })
+  @prop({ required: true })
+  job: string;
+
+  @prop({ default: 25 })
   holidayCredit: number;
 
-  @Prop({ required: false })
+  @prop()
   holidayCreditFirstYear: number;
 
-  @Prop({ required: true, default: 25 })
+  @prop({ default: 25 })
   availableHolidayCredit: number;
 
-  @Prop({ type: WorkingHoursSchema, required: true, default: {} })
+  @prop({ required: true })
   workingHours: WorkingHoursModel;
 
-  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'TimeReport' })
-  lastRecordedDate: string;
+  @prop({ ref: () => TimeReportModel })
+  lastRecordedDate?: Ref<TimeReportModel>;
 }
-
-export const EmployeeSchema = SchemaFactory.createForClass(EmployeeModel);

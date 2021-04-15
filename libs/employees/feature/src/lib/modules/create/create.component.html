@@ -1,1 +1,261 @@
-<p>create works!</p>
+
+<div class='px-4 lg:px-8 3xl:px-20 pt-8 flex justify-between'>
+  <h1 class='text-2xl text-gray-900 mb-4 font-medium py-2'>Mitarbeiter anlegen</h1>
+  <div>
+    <button ebButton [class.opacity-60]='form.invalid' (click)='createEmployee()'>Anlegen</button>
+  </div>
+</div>
+
+<div class='grid grid-cols-form-employee lg:grid-cols-form-employee-lg lg:grid-rows-form-employee-lg 2xl:grid-cols-form-employee-xl gap-6 px-4 lg:px-8 3xl:px-20 pb-10'>
+
+  <div class='flex flex-col flex-shrink-0 col-span-1'>
+    <div class='bg-white shadow-sm rounded ring-blue-800 hover:shadow-md cursor-pointer select-none transition-shadow ease-in-out'>
+      <div class='flex w-full items-center justify-center rounded-t h-36 bg-gray-200 text text-gray-500'>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class='h-24'>
+          <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
+        </svg>
+      </div>
+      <div class='p-4'>
+        <h6 class='text-base font-semibold text-gray-900'>
+          {{ (personalInfoForm?.value?.firstname && personalInfoForm?.value?.lastname)
+              ? ((personalInfoForm?.value?.firstname + ' ')  + (personalInfoForm?.value?.lastname))
+              : 'Noch kein Name'
+          }}
+        </h6>
+        <h6 class='text-sm font-light text-gray-500'>{{ (personalInfoForm?.value?.mail || '' ) || 'Noch keine E-Mail Adresse' }}</h6>
+      </div>
+    </div>
+  </div>
+
+  <form [formGroup]='form' class='flex flex-col space-y-4 w-full lg:col-start-2 lg:col-end-2 lg:row-span-full'>
+
+    <!-- Personal Info Form -->
+    <eb-form-container>
+      <ng-container *ebFormHeader>
+        <h6 class='text-gray-400 text-xs uppercase tracking-wide font-medium'>Persönliche Daten</h6>
+      </ng-container>
+
+      <div *ebFormGroup [formGroup]='personalInfoForm' class='flex space-y-16 flex-col'>
+        <div class='flex flex-col lg:grid lg:grid-cols-horizontal-form'>
+          <div class='flex flex-col max-w-108 min-w-94 w-full flex-grow pr-16 mb-6 xl:mb-0'>
+            <h6 class='text-base font-medium text-gray-900 mb-1'>Allgemein</h6>
+            <p class='text-sm font-light text-gray-500'>
+              Grundinformationen über den Mitarbeiter
+            </p>
+          </div>
+          <div class='flex flex-col w-full space-y-6'>
+              <div class='input-container-vertical'>
+                <label class='input-label'>Geschlecht</label>
+                <div class='flex flex-row space-x-4'>
+                  <label class='space-x-2 w-28 flex items-center'>
+                    <input type='radio' name='gender' value='m' formControlName='gender'>
+                    <span class='text-sm font-light text-gray-700'>Männlich</span>
+                  </label>
+                  <label class='space-x-2 flex items-center'>
+                    <input type='radio' name='gender' value='w' formControlName='gender'>
+                    <span class='text-sm font-light text-gray-700'>Weiblich</span>
+                  </label>
+                </div>
+              </div>
+
+            <div class='flex flex-row space-x-4'>
+              <div class='input-container-vertical w-full'>
+                <label for='firstnameInput' class='input-label'>Vorname</label>
+                <input id='firstnameInput' type='text' placeholder='Vorname' formControlName='firstname' ebInput>
+              </div>
+              <div class='input-container-vertical w-full'>
+                <label for='lastnameInput'>Nachname</label>
+                <input id='lastnameInput' type='text' placeholder='Nachname' formControlName='lastname' ebInput>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class='flex flex-col lg:grid lg:grid-cols-horizontal-form'>
+          <div class='flex flex-col max-w-108 min-w-94 w-full flex-grow pr-16 mb-6 xl:mb-0'>
+            <h6 class='text-base font-medium text-gray-900 mb-1'>Adressdaten</h6>
+            <p class='text-sm font-light text-gray-500'>
+              Herkunft und sonstige adressbezogene Daten
+            </p>
+          </div>
+          <div class='flex flex-col w-full space-y-6'>
+            <div class='flex flex-row space-x-4 w-full'>
+              <div class='input-container-vertical w-full'>
+                <label for='countryInput' class='input-label'>Land</label>
+                <input id='countryInput' type='text' placeholder='Land / Staat' formControlName='country' ebInput>
+              </div>
+              <div class='flex w-full invisible' aria-hidden='true'></div>
+            </div>
+
+            <div class='flex flex-row space-x-4 w-full'>
+              <div class='input-container-vertical w-full'>
+                <label for='streetInput' class='input-label'>Straße</label>
+                <input id='streetInput' type='text' placeholder='Straße (optional)' formControlName='street' ebInput>
+              </div>
+              <div class='w-full'>
+                <div class='input-container-vertical w-32'>
+                  <label for='houseNumberInput'>Hausnummer</label>
+                  <input id='houseNumberInput' type='text'  placeholder='Nr. (optional)' formControlName='houseNumber' ebInput>
+                </div>
+              </div>
+            </div>
+
+            <div class='flex flex-row space-x-4 w-full'>
+              <div class='input-container-vertical w-full'>
+                <label for='cityInput'>Ort</label>
+                <input id='cityInput' type='text' placeholder='Ort' formControlName='city' ebInput>
+              </div>
+              <div class='w-full'>
+                <div class='input-container-vertical w-32'>
+                  <label for='zipCodeInput' class='input-label'>PLZ</label>
+                  <input id='zipCodeInput' type='text' placeholder='PLZ' formControlName='zipCode' ebInput>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class='flex flex-col lg:grid lg:grid-cols-horizontal-form'>
+          <div class='flex flex-col max-w-108 min-w-94 w-full flex-grow pr-16 mb-6 xl:mb-0'>
+            <h6 class='text-base font-medium text-gray-900 mb-1'>Kontaktdaten</h6>
+            <p class='text-sm font-light text-gray-500'>
+              Diverse private Kontaktinformationen
+            </p>
+          </div>
+          <div class='flex flex-col w-full space-y-6'>
+            <div class='flex flex-row space-x-4'>
+              <div class='input-container-vertical w-full'>
+                <label for='mailInput'>E-Mail (Privat)</label>
+                <input id='mailInput' type='email' placeholder='E-Mail' formControlName='mail' ebInput>
+              </div>
+
+              <div class='input-container-vertical w-full'>
+                <label for='mail2Input'>Alternative E-Mail (Privat)</label>
+                <input id='mail2Input' type='email' placeholder='E-Mail 2(optional)' formControlName='mail2' ebInput>
+              </div>
+            </div>
+
+            <div class='flex flex-row space-x-4 w-full'>
+              <div class='input-container-vertical w-full'>
+                <label for='phoneInput'>Telefon / Handy</label>
+                <input id='phoneInput' type='text' placeholder='Telefon (optional)' formControlName='phone' ebInput>
+              </div>
+
+              <div class='input-container-vertical w-full'>
+                <label for='phone2Input'>Alternative Telefonnummer</label>
+                <input id='phone2Input' type='text' placeholder='Telefon 2 (optional)' formControlName='phone2' ebInput>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </eb-form-container>
+
+    <!-- Company Info Form -->
+    <eb-form-container>
+      <ng-container *ebFormHeader>
+        <h6 class='text-gray-400 text-xs uppercase tracking-wide font-medium'>Firmenbezogene Daten</h6>
+      </ng-container>
+
+      <div *ebFormGroup [formGroup]='companyInfoForm' class='flex space-y-16 flex-col'>
+
+        <div class='flex flex-col lg:grid lg:grid-cols-horizontal-form'>
+          <div class='flex flex-col max-w-108 min-w-94 w-full flex-grow pr-16 mb-6 xl:mb-0'>
+            <h6 class='text-base font-medium text-gray-900 mb-1'>Urlaubsanspruch</h6>
+            <p class='text-sm font-light text-gray-500'>
+              Salden für jährliches Urlaubskontingent
+            </p>
+          </div>
+          <div class='flex flex-col w-full space-y-6'>
+            <div class='flex flex-row space-x-4 w-full'>
+              <div class='input-container-vertical w-full'>
+                <label for='joiningDateInput'>Einstellungsdatum</label>
+                <input id='joiningDateInput' type='text' placeholder='Einstellungsdatum (optional)' formControlName='joiningDate' ebInput>
+              </div>
+              <div class='input-container-vertical w-full'>
+                <label for='jobInput'>Position / Beruf</label>
+                <input id='jobInput' type='text' formControlName='job' placeholder='Beruf / Position' ebInput>
+              </div>
+            </div>
+
+
+            <div class='flex flex-row space-x-4 w-full'>
+              <div class='input-container-vertical w-full'>
+                <label for='holidayCreditInput'>Urlaubsanspruch / Jahr</label>
+                <input id='holidayCreditInput' type='text'  placeholder='Urlaubskontingent / Jahr' formControlName='holidayCredit' ebInput>
+              </div>
+              <div class='input-container-vertical w-full'>
+                <label for='holidayCreditFirstYearInput'>Urlaubsanspruch (1. Jahr)</label>
+                <input id='holidayCreditFirstYearInput' type='email' placeholder='Urlaub 1. Jahr' formControlName='holidayCreditFirstYear' ebInput>
+              </div>
+            </div>
+
+            <div class='flex flex-row space-x-4'>
+              <div class='input-container-vertical w-full'>
+                <label for='availableHolidayCreditInput'>Verfügbare Urlaubstage</label>
+                <input id='availableHolidayCreditInput' type='number' placeholder='Bestehender Saldo (optional)' formControlName='availableHolidayCredit' ebInput>
+              </div>
+              <div class='flex w-full invisible' aria-hidden='true'></div>
+            </div>
+          </div>
+        </div>
+
+        <div class='flex flex-col lg:grid lg:grid-cols-horizontal-form'>
+          <div class='flex flex-col max-w-108 min-w-94 w-full flex-grow pr-16 mb-6 xl:mb-0'>
+            <h6 class='text-base font-medium text-gray-900 mb-1'>Wochenarbeitszeit</h6>
+            <p class='text-sm font-light text-gray-500'>
+              Normalarbeitsstunden pro Kalenderwoche
+            </p>
+          </div>
+          <div class='flex flex-col w-full space-y-6' [formGroup]='workingHours'>
+            <div class='flex flex-row space-x-4'>
+              <div class='input-container-vertical'>
+                <label for='mondayInput'>Montag</label>
+                <input id='mondayInput' type='number' placeholder='Stunden' formControlName='monday' ebInput>
+              </div>
+              <div class='input-container-vertical'>
+                <label for='tuesdayInput'>Dienstag</label>
+                <input id='tuesdayInput' type='number' placeholder='Stunden'  formControlName='tuesday' ebInput>
+              </div>
+              <div class='input-container-vertical'>
+                <label for='wednesdayInput'>Mittwoch</label>
+                <input id='wednesdayInput' type='number'  placeholder='Stunden'  formControlName='wednesday' ebInput>
+              </div>
+            </div>
+
+            <div class='flex flex-row space-x-4'>
+              <div class='input-container-vertical'>
+                <label for='thursdayInput'>Donnerstag</label>
+                <input id='thursdayInput' type='number' placeholder='Stunden'  formControlName='thursday' ebInput>
+              </div>
+              <div class='input-container-vertical'>
+                <label for='fridayInput'>Freitag</label>
+                <input id='fridayInput' type='number' placeholder='Stunden' formControlName='friday' ebInput>
+              </div>
+              <div class='input-container-vertical'>
+                <label for='saturdayInput'>Samstag</label>
+                <input id='saturdayInput' type='number' placeholder='Stunden' formControlName='saturday' ebInput>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </eb-form-container>
+  </form>
+
+  <div class='flex flex-col flex-shrink-0 lg:col-start-1 lg:col-end-1 lg:row-start-2 lg:row-end-2 2xl:row-start-1 2xl:row-end-1 2xl:col-start-3 2xl:col-end-3'>
+    <eb-form-container>
+      <ng-container *ebFormHeader>
+        <h6 class='text-gray-400 text-xs uppercase tracking-wide font-medium'>Dokumente</h6>
+      </ng-container>
+
+      <ng-container *ebFormGroup>
+        <div class='grid place-items-center text-xs h-20 p-4 my-2 font-light text-center rounded border-2 border-gray-200 border-dashed text-gray-400'>
+          Dokumente oder Dateien zum anfügen ablegen
+        </div>
+      </ng-container>
+    </eb-form-container>
+  </div>
+
+</div>
+

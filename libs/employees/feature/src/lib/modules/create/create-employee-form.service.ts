@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CreateEmployeePayload, WeeklyWorkingHours } from '@elektro-braun/employees/domain';
 
 // eslint-disable-next-line max-len
@@ -7,31 +7,41 @@ const EMAIL_REGEX = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))
 
 export interface CreateEmployeeFormValue {
   personalInfo: {
-    name: string;
-    age: number;
+    gender: 'm' | 'w',
+    firstname: string;
+    lastname: string;
+    country: string;
+    street?: string;
+    houseNumber?: string;
+    city?: string;
+    zipCode?: string;
     mail: string | null;
-    phone: string | null;
-    documents: never[];
+    mail2?: string | null;
+    phone?: string | null;
+    phone2?: string | null;
+    dateOfBirth?: string;
+    documents?: never[];
   };
   companyInfo: {
     holidayCredit: number;
     holidayCreditFirstYear: number;
     availableHolidayCredit: number;
     joiningDate: string;
+    job: string;
   };
   workingHours: WeeklyWorkingHours;
 }
 
-@Injectable({ providedIn: 'root' })
+@Injectable()
 export class CreateEmployeeFormService {
 
-  readonly form = this.createForm();
+  private _form = this.createForm();
 
   constructor(private fb: FormBuilder) {}
 
   /** @returns Form-Model, das die persönlichen Daten eines Mitarbeiters abbildet */
   get personalInfoGroup(): FormGroup {
-    return this.form.controls['personalInfo'] as FormGroup;
+    return this._form.controls['personalInfo'] as FormGroup;
   }
 
   /** @returns Ob das Form-Model (persönliche Daten) bereits fokussiert und verändert wurde */
@@ -42,7 +52,7 @@ export class CreateEmployeeFormService {
 
   /** @returns Form-Model, das die firmenrelevanten Daten eines Mitarbeiters abbildet */
   get companyInfoGroup(): FormGroup {
-    return this.form.controls['companyInfo'] as FormGroup;
+    return this._form.controls['companyInfo'] as FormGroup;
   }
 
   /** @returns Ob das Form-Model (persönliche Daten) bereits fokussiert und verändert wurde */
@@ -53,7 +63,7 @@ export class CreateEmployeeFormService {
 
   /** @returns Form-Model, das die firmenrelevanten Daten eines Mitarbeiters abbildet */
   get workingHoursGroup(): FormGroup {
-    return this.form.controls['workingHours'] as FormGroup;
+    return this._form.controls['workingHours'] as FormGroup;
   }
 
   /** @returns Ob das Form-Model (persönliche Daten) bereits fokussiert und verändert wurde */
@@ -62,12 +72,12 @@ export class CreateEmployeeFormService {
     return touched && dirty;
   }
 
-  /** @returns Form-Model, das die firmenrelevanten Daten eines Mitarbeiters abbildet */
+  /** @returns Form-Wert der gesamten Form (inkl. Sub-Models) */
   get formValue(): CreateEmployeePayload {
-    const { personalInfo, companyInfo, workingHours }: CreateEmployeeFormValue = this.form.value;
+    const { personalInfo, companyInfo, workingHours }: CreateEmployeeFormValue = this._form.value;
     return {
-      ...personalInfo,
-      ...companyInfo,
+      personalInfo,
+      companyInfo,
       workingHours
     }
   }
@@ -77,12 +87,13 @@ export class CreateEmployeeFormService {
    * Standartwerte und Validierung sind bereits gesetzt
    * @returns Form-Model zum Anlegen eines Mitarbeiters
    */
-  private createForm(): FormGroup {
-    return this.fb.group({
+  createForm(): FormGroup {
+    this._form = this.fb.group({
       personalInfo: this.createPersonalInfoFormGroup(),
       companyInfo: this.createCompanyInfoFormGroup(),
       workingHours: this.createWorkingHoursFormGroup(),
-    })
+    });
+    return this._form;
   }
 
   /**
@@ -93,13 +104,13 @@ export class CreateEmployeeFormService {
    */
   private createWorkingHoursFormGroup(): FormGroup {
     return this.fb.group({
-      monday: [0, Validators.compose([Validators.min(0), Validators.max(24), Validators.required])],
-      tuesday: [0, Validators.compose([Validators.min(0), Validators.max(24), Validators.required])],
-      wednesday: [0, Validators.compose([Validators.min(0), Validators.max(24), Validators.required])],
-      thursday: [0, Validators.compose([Validators.min(0), Validators.max(24), Validators.required])],
-      friday: [0, Validators.compose([Validators.min(0), Validators.max(24), Validators.required])],
+      monday: [8, Validators.compose([Validators.min(0), Validators.max(24), Validators.required])],
+      tuesday: [8, Validators.compose([Validators.min(0), Validators.max(24), Validators.required])],
+      wednesday: [8, Validators.compose([Validators.min(0), Validators.max(24), Validators.required])],
+      thursday: [8, Validators.compose([Validators.min(0), Validators.max(24), Validators.required])],
+      friday: [6.5, Validators.compose([Validators.min(0), Validators.max(24), Validators.required])],
       saturday: [0, Validators.compose([Validators.min(0), Validators.max(24)])],
-      sunday: [0, Validators.compose([Validators.min(0), Validators.max(24)])],
+      sunday: [0],
     })
   }
 
@@ -111,10 +122,19 @@ export class CreateEmployeeFormService {
    */
   private createPersonalInfoFormGroup(): FormGroup {
     return this.fb.group({
-      name: ['', Validators.required],
-      age: [null, Validators.compose([Validators.min(0), Validators.max(99)])],
+      gender: ['m', Validators.required],
+      firstname: ['', Validators.required],
+      lastname: ['', Validators.required],
       mail: [null, Validators.compose([Validators.pattern(EMAIL_REGEX)])],
+      mail2: [null],
       phone: [null],
+      phone2: [null],
+      dateOfBirth: [null],
+      street: [null],
+      houseNumber: [null],
+      zipCode: [null, Validators.compose([Validators.minLength(4), Validators.maxLength(5)])],
+      city: [null, Validators.required],
+      country: [null, Validators.required],
       documents: this.fb.array([])
     })
   }
@@ -128,9 +148,10 @@ export class CreateEmployeeFormService {
   private createCompanyInfoFormGroup(): FormGroup {
     return this.fb.group({
       holidayCredit: [null, Validators.required],
-      holidayCreditFirstYear: [null, Validators.required],
+      holidayCreditFirstYear: [null],
       availableHolidayCredit: [null],
       joiningDate: [null],
+      job: [null, Validators.required]
     })
   }
 }

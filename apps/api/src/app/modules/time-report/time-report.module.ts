@@ -1,14 +1,14 @@
 import { Module } from '@nestjs/common';
-import { MongooseModule } from '@nestjs/mongoose';
-import { TimeReportModel, TimeReportSchema } from './schemas/time-report.schema';
+import { TimeReportModel } from './schemas/time-report.schema';
 import { TimeReportService } from './time-report.service';
 import { TimeReportController } from './time-report.controller';
+import { TypegooseModule } from 'nestjs-typegoose';
+import { EmployeeModule } from '../employee/employee.module';
 
 @Module({
   imports: [
-    MongooseModule.forFeature([
-      { name: TimeReportModel.collectionName, schema: TimeReportSchema }
-    ])
+    TypegooseModule.forFeature([{ typegooseClass: TimeReportModel, schemaOptions: { collection: 'timereports' }}]),
+    EmployeeModule
   ],
   controllers: [TimeReportController],
   providers: [TimeReportService],

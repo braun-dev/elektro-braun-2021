@@ -2,6 +2,7 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { Strategy } from 'passport-local';
 import { AuthService } from './auth.service';
+// eslint-disable-next-line @nrwl/nx/enforce-module-boundaries
 import { User } from '@elektro-braun/shared/util-data';
 import { UserModel } from '../users/schemas/user.schema';
 

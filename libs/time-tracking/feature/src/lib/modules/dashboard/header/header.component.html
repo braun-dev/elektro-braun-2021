@@ -1,48 +1,101 @@
-<div class='flex flex-col px-8 overflow-y-visible sticky top-0 pb-8 pt-10 top-0 bg-gray-100 border-b border-gray-200'>
-  <div class='flex items-center justify-between'>
+<div class='flex flex-col overflow-y-visible sticky top-0 pt-10 top-0 bg-gray-100 z-50 relative'>
+  <div class='flex flex-col xl:flex-row xl:items-center xl:justify-between px-8 pb-8 border-b border-gray-200'>
     <h1 class='text-2xl text-gray-900'>Erfasste Arbeitszeiten</h1>
-    <div>
-      <div class='flex flex-row items-center justify-end overflow-y-visible' *ngIf='vm?.employees'>
-        <input
-          placeholder='Filter (Ab Datum)'
-          type='text'
-          #fromDate
-          [value]='filter?.from | date:"dd.MM.yyyy"'
-          (keydown.enter)='updateFromDate(fromDate?.value)'
-          (blur)='updateFromDate(fromDate?.value)'
-          class='mr-3 appearance-none flex flex-shrink-0 flex-grow-0 w-64 bg-white border border-gray-300 rounded-md shadow-sm pl-3 pr-10 py-2 text-left cursor-default focus:outline-none focus:ring-1 focus:ring-blue-400 sm:text-sm'>
+    <div class='flex flex-wrap xl:flex-nowrap'>
+      <div class='flex flex-row xl:items-center xl:justify-end overflow-y-visible flex-wrap xl:flex-nowrap' *ngIf='employees'>
+        <label class='mt-2 xl:mt-0'>
+          <input
+            placeholder='Filter (Ab Datum)'
+            type='text'
+            #fromDate
+            [value]='filter?.from | date:"dd.MM.yyyy"'
+            (keydown.arrowUp)='nextFromDate()'
+            (keydown.arrowDown)='prevFromDate()'
+            (keydown.enter)='updateFromDate(fromDate?.value)'
+            (blur)='updateFromDate(fromDate?.value)'
+            class='mr-3 appearance-none flex flex-shrink-0 flex-grow-0 w-64 bg-white border border-gray-300 rounded-md shadow-sm pl-3 pr-10 py-2 text-left cursor-default focus:outline-none focus:ring-1 focus:ring-blue-400 sm:text-sm'>
+        </label>
 
-        <input
-          placeholder='Filter (Bis Datum)'
-          type='text'
-          #toDate
-          [value]='filter?.to | date:"dd.MM.yyyy"'
-          (keydown.enter)='updateToDate(toDate?.value)'
-          (blur)='updateToDate(toDate?.value)'
-          class='mr-3 appearance-none flex flex-shrink-0 flex-grow-0 w-64 bg-white border border-gray-300 rounded-md shadow-sm pl-3 pr-10 py-2 text-left cursor-default focus:outline-none focus:ring-1 focus:ring-blue-400 sm:text-sm'>
+        <label class='mt-2 xl:mt-0'>
+          <input
+            placeholder='Filter (Bis Datum)'
+            type='text'
+            #toDate
+            [value]='filter?.to | date:"dd.MM.yyyy"'
+            (keydown.enter)='updateToDate(toDate?.value)'
+            (keydown.arrowUp)='nextToDate()'
+            (keydown.arrowDown)='prevToDate()'
+            (blur)='updateToDate(toDate?.value)'
+            class='mr-3 appearance-none flex flex-shrink-0 flex-grow-0 w-64 bg-white border border-gray-300 rounded-md shadow-sm pl-3 pr-10 py-2 text-left cursor-default focus:outline-none focus:ring-1 focus:ring-blue-400 sm:text-sm'>
+        </label>
 
         <eb-select
-          class='mr-3'
+          class='mr-3 mt-2 xl:mt-0'
           [selected]='selectedEmployee'
           [options]='employees'
           [optionTemplate]='optionTemplate'
           [valueTemplate]='valueTemplate'
           [focusTrigger]='subject | async'
-          (selectionChanged)='selectEmployee($event)'
+          (selectionChanged)='employeeChange.emit({ id: $event.id })'
           [selectedClasses]='["bg-blue-700", "text-blue-100"]'
           placeholder='Mitarbeiter auswählen'>
         </eb-select>
 
         <ng-template #valueTemplate let-selectedOption let-highlighted="highlighted">
-          <span [ngClass]='highlighted ? "text-gray-900" : "text-gray-700"'>{{ selectedOption.name }}</span>
+          <span [ngClass]='highlighted ? "text-gray-900" : "text-gray-700"' *ngIf='selectedOption && selectedOption?.name'>{{ selectedOption?.name }}</span>
         </ng-template>
 
         <ng-template #optionTemplate let-option let-highlighted="highlighted">
-          <span [ngClass]='highlighted ? "text-white" : "text-gray-700"'>{{ option.name }}</span>
+          <span [ngClass]='highlighted ? "text-white" : "text-gray-700"'>{{ option?.name }}</span>
         </ng-template>
 
-        <button ebButton [size]="'m'" (click)='create.emit()'>Erfassen</button>
+        <button ebButton class='mt-2 xl:mt-0' (click)='create.emit(showInsert)'>Erfassen</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Table header -->
+  <div class="flex flex-col h-auto">
+    <div class="-my-2 overflow-x-auto">
+      <div class="py-2 align-middle inline-block min-w-full">
+        <div class="overflow-hidden border-b border-gray-200">
+          <table class="min-w-full bg-white divide-y divide-gray-200" style='table-layout: fixed;'>
+            <thead class="bg-white border-gray-200">
+            <tr class='sticky top-0'>
+              <th style='min-width: 14rem;' scope="col" class="pl-12 pr-6 py-3 w-96 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Datum
+              </th>
+              <th style='min-width: 3rem;' scope="col" class="px-6 py-3 w-28 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Gesamt
+              </th>
+              <th style='min-width: 3rem;' scope="col" class="px-6 py-3 w-28 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Normal
+              </th>
+              <th style='min-width: 3rem;' scope="col" class="px-6 py-3 w-28 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                ÜS
+              </th>
+              <th style='min-width: 3rem;' scope="col" class="px-6 py-3 w-28 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                ZA
+              </th>
+              <th style='min-width: 3rem;' scope="col" class="px-6 py-3 w-28 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Urlaub
+              </th>
+              <th style='min-width: 3rem;' scope="col" class="px-6 py-3 w-28 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Krank
+              </th>
+              <th style='min-width: 3rem;' scope="col" class="px-6 py-3 w-16 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Summe
+              </th>
+              <th style='min-width: 3rem;' scope="col" class="pr-12 pl-6 py-3">
+                <span class="sr-only">Edit</span>
+              </th>
+            </tr>
+            </thead>
+          </table>
+        </div>
       </div>
     </div>
   </div>
 </div>
+
+

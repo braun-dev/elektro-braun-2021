@@ -1,8 +1,13 @@
 import { Body, Controller, Post, Req, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { AuthenticatedUser, User } from '@elektro-braun/shared/util-data';
+// eslint-disable-next-line @nrwl/nx/enforce-module-boundaries
+import { AuthenticatedUser } from '@elektro-braun/shared/util-data';
 import { CreateUserDto } from '../users/dto/create-user.dto';
 import { LocalAuthGuard } from './guards/local-auth.guard';
+// eslint-disable-next-line @nrwl/nx/enforce-module-boundaries
+import { AuthResponse } from '@elektro-braun/auth/domain';
+// eslint-disable-next-line @nrwl/nx/enforce-module-boundaries
+import { ApiResponse } from '@elektro-braun/shared/util-networking';
 
 @Controller('auth')
 export class AuthController {
@@ -10,8 +15,16 @@ export class AuthController {
 
   @UseGuards(LocalAuthGuard)
   @Post('login')
-  async login(@Req() req): Promise<User> {
-    return this.authService.login(req.user);
+  async login(@Req() req): Promise<ApiResponse<AuthResponse>> {
+    const { user, tokens } = await this.authService.login(req.user);
+    return {
+      status: 'success',
+      statusCode: 200,
+      data: {
+        user: user,
+        token: tokens.token
+      }
+    }
   }
 
   @Post('register')
